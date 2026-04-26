@@ -1,0 +1,26 @@
+/*
+You are given a number n. You need to find the count of digits in n.
+
+Examples :
+Input: n = 1
+Output: 1
+Explanation: Number of digit in 1 is 1.
+*/
+
+//Code:
+class Solution {
+  public:
+    int countDigits(int n) 
+    {
+        int cnt=0;
+        while(n>0)
+        {
+            n=n/10;
+            cnt++;
+        }
+        return cnt;
+    }
+};
+
+//Time Complexity = O(n)
+//Space Complexity = O(1)

@@ -1,0 +1,20 @@
+/*
+Given an integer n, your task is to compute the sum of all natural numbers from 1 to n (inclusive). If n is 0, the sum should be 0.
+
+Examples:
+Input: n = 6
+Output: 21
+Explanation: The sum of natural numbers up to 6 is: 1 + 2 + 3 + 4 + 5 + 6 = 21
+*/
+
+//Code:
+class Solution {
+  public:
+    int sumOfNaturals(int n) {
+        if(n==0) return 0;
+        return n + sumOfNaturals(n-1);
+    }
+};
+
+//Time: O(n)
+//Space: O(n) (due to recursion stack)

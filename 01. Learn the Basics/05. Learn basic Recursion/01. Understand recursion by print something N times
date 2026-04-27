@@ -1,0 +1,24 @@
+/*
+Print abc n times without the loop.
+
+Example:
+Input:5
+Output:abc abc abc abc abc
+*/
+
+//Code:
+class Solution {
+  public:
+    void print_abc(int N) {
+        //base case
+        if(N==0) return;
+
+        cout<<"abc ";
+
+        //recursive call
+        return print_abc(N-1);
+    }
+};
+
+//Time = O(N)
+//Space: O(N)

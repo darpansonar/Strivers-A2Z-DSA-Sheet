@@ -1,0 +1,64 @@
+/*
+Given two positive integers a and b, find GCD and LCM of a and b.
+
+Examples:
+Input: a = 20, b = 28
+Output: 4
+Explanation: GCD of 20 and 28 is 4
+*/
+
+//Code:
+//Approach 1:
+class Solution {
+  public:
+    int gcd(int a, int b) {
+        int x;// x is the smallest among a and b
+        if(a<=b) x=a;
+        else x=b;
+        
+        int Gcd=1;
+        for(int i=1;i<=x;i++)
+        {
+            if(a%i==0 && b%i==0) Gcd=i;
+        }
+        return Gcd;
+    }
+    int lcm(int a,int b) {
+        return (a*b)/gcd(a,b);
+    }
+};
+
+//Time = O(min(a, b))
+//Space = O(1)
+
+//Approach 2:
+class Solution {
+  public:
+    int gcd(int a, int b) {
+        return __gcd(a,b);
+    }
+    int lcm(int a,int b) {
+        return (a*b)/gcd(a,b);
+    }
+};
+
+//Time = O(log(min(a, b)))
+//Space = O(1)
+
+//Approach 3:
+class Solution {
+  public:
+    int gcd(int a, int b) {
+        if(a==0) return b;
+        if(b==0) return a;
+        if(a==b) return a;
+        if(a>b) return gcd(a-b,b);
+        else return gcd(a,b-a);
+    }
+    int lcm(int a,int b) {
+        return (a*b)/gcd(a,b);
+    }
+};
+
+//Time = O(max(a, b))
+//Space = O(max(a, b))

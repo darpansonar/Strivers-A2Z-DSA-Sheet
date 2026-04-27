@@ -1,0 +1,38 @@
+/*
+Given a positive integer, n. Find the factorial of n.
+
+Examples :
+Input: n = 5
+Output: 120
+Explanation: 1 x 2 x 3 x 4 x 5 = 120
+*/
+
+//Code:
+//Approach 1:
+class Solution {
+  public:
+    int factorial(int n) {
+        if(n==0 || n==1) return 1;
+        return n*factorial(n-1);
+    }
+};
+
+//Time: O(n)
+//Space: O(n)
+
+//Approach 2:
+class Solution {
+  public:
+    int factorial(int n) {
+        int result = 1;
+
+        for(int i = 2; i <= n; i++) {
+            result = result * i;
+        }
+
+        return result;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

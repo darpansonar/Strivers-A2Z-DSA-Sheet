@@ -1,0 +1,33 @@
+/*
+Given an array of N integers, write a program to implement the Recursive Bubble Sort algorithm.
+
+Example:
+Input: N = 6, array[] = {13,46,24,52,20,9}
+Output: 9,13,20,24,46,52
+Explanation: After sorting we get 9,13,20,24,46,52
+*/
+
+//Code:
+#include <bits/stdc++.h>
+using namespace std;
+
+void bubbleSort(int arr[], int n)
+{
+    // Base case
+    if (n == 1)
+        return;
+
+    // One pass of bubble sort. After this pass, the largest element is moved (or bubbled) to end.
+
+    for (int i=0; i<n-1; i++)
+        if (arr[i] > arr[i+1]){
+            swap(arr[i], arr[i+1]);
+        }
+
+    // Largest element is fixed, recur for remaining array
+
+    bubbleSort(arr, n-1);
+}
+
+//Time: O(N^2)
+//Space: O(N) 

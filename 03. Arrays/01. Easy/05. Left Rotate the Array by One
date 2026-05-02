@@ -1,0 +1,46 @@
+/*
+Given an integer array nums, rotate the array to the left by one.
+Note: There is no need to return anything, just modify the given array.
+
+Example:
+Input: nums = [1, 2, 3, 4, 5]  
+Output: [2, 3, 4, 5, 1]  
+*/
+
+//Code:
+//Approach 1:
+void solve(int arr[], int n) {
+    int temp[n];  // Create a temporary array to store the shifted elements
+
+    // Shift the elements to the left by one position
+    for (int i = 1; i < n; i++) {
+        temp[i - 1] = arr[i];
+    }
+    temp[n - 1] = arr[0];  // The first element moves to the last position
+
+    // Print the rotated array
+    for (int i = 0; i < n; i++) {
+        cout << temp[i] << " ";  // Print each element of the rotated array
+    }
+    cout << endl;
+}
+
+//Time Complexity: O(N)
+//Space Complexity: O(N)
+
+//Approach 2:
+void rotateArrayByOne(vector<int>& nums) {
+    // Store the first element in a temporary variable
+    int temp = nums[0];
+        
+    // Shift elements to the left
+    for (int i = 1; i < nums.size(); ++i) {
+        nums[i - 1] = nums[i];
+     }
+
+     // Place the first element at the end
+     nums[nums.size() - 1] = temp;
+}
+
+//Time Complexity: O(N)
+//Space Complexity: O(1)

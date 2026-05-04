@@ -1,0 +1,71 @@
+/*
+Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
+You must implement a solution with a linear runtime complexity and use only constant extra space.
+
+Example:
+Input: nums = [4,1,2,1,2]
+Output: 4
+*/
+
+//Code:
+//Approach 1:
+class Solution {
+public:
+    int singleNumber(vector<int>& arr) {
+        int n = arr.size();
+
+        // Loop through every element
+        for (int i = 0; i < n; i++) {
+            int num = arr[i]; // current element to check
+            int cnt = 0;
+
+            // Count occurrences of this element
+            for (int j = 0; j < n; j++) {
+                if (arr[j] == num)
+                    cnt++;
+            }
+
+            // If it occurs only once, return it
+            if (cnt == 1) return num;
+        }
+
+        // This line should never be reached
+        return -1;
+    }
+};
+
+//Time Complexity : O(n^2)
+//Space Complexity: O(1)
+
+//Approach 2:
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size(); i = i+2) 
+        {
+            if (i == nums.size() - 1 || nums[i] != nums[i+1])
+                return nums[i];
+        }
+        return -1;
+    }
+};
+
+//Time Complexity : O(n log n)
+//Space Complexity: O(log n)
+
+//Approach 3:
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        //wkt, a^a=0 and a^0=a
+        int result=0;
+        for(int i:nums)
+        {
+            result=result^i;
+        }
+        return result;
+    }
+};
+//Time Complexity : O(n)
+//Space Complexity: O(1)

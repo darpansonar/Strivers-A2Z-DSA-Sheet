@@ -1,0 +1,83 @@
+/*
+Given an integer array nums, find the subarray with the largest sum, and return its sum.
+
+Example:
+Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+Output: 6
+Explanation: The subarray [4,-1,2,1] has the largest sum 6.
+*/
+
+//Code:
+//Approach 1:
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        //Brute force
+        int n=nums.size();
+
+        int maxi=INT_MIN;
+        for(int i=0;i<n;i++)
+        {
+            int sum=0;
+            for(int j=i;j<n;j++)
+            {
+                sum=sum+nums[j];
+
+                maxi=max(maxi,sum);
+            }
+        }
+        return maxi;
+    }
+};
+
+//Time: O(n^2)
+//Space: O(1)
+
+//Approach 2:
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        //Optimal
+        int n=nums.size();
+        long long maxi=LLONG_MIN;
+        long long sum=0;
+
+        for(int i=0;i<n;i++)
+        {
+            sum=sum+nums[i];
+
+            if(sum>maxi) maxi=sum;
+
+            if(sum<0) sum=0; //If sum becomes negative then reset it to 0
+        }
+        return maxi;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)
+
+//Approach 3:
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        //Kadane's algorithm
+        int res = nums[0];           
+        
+        int maxEnding = nums[0];     
+
+        for (int i = 1; i < nums.size(); i++) {
+            
+            // Either extend the previous subarray or start 
+            // new from current element
+            maxEnding = max(nums[i], maxEnding + nums[i]);
+
+            // Update result if the new subarray sum is larger
+            res = max(res, maxEnding);
+        }
+        return res;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

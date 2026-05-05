@@ -1,0 +1,93 @@
+/*
+Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+You can return the answer in any order.
+
+Example:
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+*/
+
+//Code:
+//Approach 1:
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        int n=nums.size();
+        for(int i=0;i<n;i++)
+        {
+            for(int j=i+1;j<n;j++)
+            {
+                if(nums[i]+nums[j]==target)
+                {
+                    return {i,j};
+                }
+            }
+        }
+        return {};
+    }
+};
+
+//Time: O(n^2)
+//Space: O(1)
+
+//Approach 2:
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& arr, int target) {
+        unordered_map<int, int> mp;  // Map to store element -> index
+        int n = arr.size();
+        for (int i = 0; i < n; i++) {
+            int complement = target - arr[i];
+            // If complement found, return indices
+            if (mp.find(complement) != mp.end()) {
+                return {mp[complement], i};
+            }
+            // Store current element and index
+            mp[arr[i]] = i;
+        }
+        return {};  // No pair found
+    }
+};
+
+//Time: O(n)
+//Space: O(n)
+
+//Approach 3:
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        int n = nums.size();
+        
+        // store value + original index
+        vector<pair<int,int>> arr;
+        for(int i = 0; i < n; i++) {
+            arr.push_back({nums[i], i});
+        }
+
+        // sort based on value
+        sort(arr.begin(), arr.end());
+
+        int left = 0, right = n - 1;
+
+        while(left < right) {
+            int sum = arr[left].first + arr[right].first;
+
+            if(sum == target) {
+                return {arr[left].second, arr[right].second};
+            }
+            else if(sum < target) {
+                left++;
+            }
+            else {
+                right--;
+            }
+        }
+
+        return {};
+    }
+};
+
+//Time: O(n log n)
+//Space: O(n)

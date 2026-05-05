@@ -1,5 +1,5 @@
 /*
-Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
+Given an array of integers nums and an integer k, return the length of longest subarray whose sum equals to k.
 A subarray is a contiguous non-empty sequence of elements within an array.
 
 Example 1:
@@ -18,7 +18,35 @@ public:
     int subarraySum(vector<int>& nums, int k) {
         //Brute force
         int n=nums.size();
-        int cnt=0;
+        int maxLen=0;
+
+        for(int i=0;i<n;i++)
+        {
+            for(int j=i;j<n;j++)
+            {
+                int sum=0;
+                for(int k=i;k<=j;k++)
+                {
+                    sum = sum + nums[k];
+                }
+                    
+                if(sum==k) maxLen=max(maxLen,j-i+1);
+            }
+        }
+        return maxLen;
+    }
+};
+
+//Time : O(n^3)
+//Space : O(1)
+
+//Approach 2:
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        //Brute force
+        int n=nums.size();
+        int maxLen=0;
 
         for(int i=0;i<n;i++)
         {
@@ -28,18 +56,18 @@ public:
                 sum=sum+nums[j];
                 if(sum==k)
                 {
-                    cnt++;
+                    maxLen=max(maxLen,j-i+1);
                 }
             }
         }
-        return cnt;
+        return maxLen;
     }
 };
 
 //Time : O(n^2)
 //Space : O(1)
 
-//Approach 2:
+//Approach 3:
 class Solution {
 public:
     int subarraySum(vector<int>& nums, int k) {

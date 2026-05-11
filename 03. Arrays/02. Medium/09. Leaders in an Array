@@ -1,0 +1,73 @@
+/*
+You are given an array arr of positive integers. Your task is to find all the leaders in the array. An element is considered a leader if it is greater than or equal to all elements to its right. The rightmost element is always a leader.
+
+Example:
+Input: arr = [16, 17, 4, 3, 5, 2]
+Output: [17, 5, 2]
+Explanation: Note that there is nothing greater on the right side of 17, 5 and, 2.
+*/
+
+//Code:
+//Approach 1:
+class Solution {
+  public:
+    vector<int> leaders(vector<int>& arr) {
+        // Brute force
+        int n=arr.size();
+        vector<int> res;
+        if(n==0) return res;
+        for(int i=0;i<n;i++)
+        {
+            int j;
+            for(j=i+1;j<n;j++)
+            {
+                if(arr[j]>arr[i])
+                {
+                    break;
+                }
+            }
+            
+            if(j==n)
+                res.push_back(arr[i]);
+        }
+        return res;
+    }
+};
+
+//Time:O(n^2)
+//Space:O(n)
+
+//Approach 2:
+class Solution {
+  public:
+    vector<int> leaders(vector<int>& arr) {
+        // Optimal 
+
+        //We will traverse the array from right
+        //Then find the maximum element from right and store in result array
+        //Reverse  the result array
+
+        int n=arr.size();
+        vector<int> res;
+        
+        if(n==0) return res;
+        
+        int maxi=arr[n-1];
+        res.push_back(arr[n-1]);
+        
+        for(int i=n-2;i>=0;i--)
+        {
+            if(arr[i]>=maxi)
+            {
+                maxi=arr[i];
+                res.push_back(arr[i]);
+            }
+        }
+        
+        reverse(res.begin(),res.end());
+        return res;
+    }
+};
+
+//Time:O(n)
+//Space:O(n)

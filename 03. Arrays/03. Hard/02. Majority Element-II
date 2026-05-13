@@ -1,0 +1,75 @@
+/*
+Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
+
+Example 1:
+Input: nums = [3,2,3]
+Output: [3]
+
+Example 2:
+Input: nums = [1,2]
+Output: [1,2]
+*/
+
+//Code:
+//Approach 1: Brute force
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        int n = nums.size(); 
+        vector<int> result;
+        
+         for (int i = 0; i < n; i++) 
+         { 
+            /*Checking if nums[i] is not already part of the answer*/
+            if (result.size() == 0 || result[0] != nums[i]) 
+            {
+                int cnt = 0;
+                for (int j = 0; j < n; j++) 
+                {
+                    // counting the frequency of nums[i]
+                    if (nums[j] == nums[i]) 
+                    {
+                        cnt++;
+                    }
+                }
+
+                if (cnt > (n / 3)) result.push_back(nums[i]);
+            }
+            //if result size is equal to 2 break out of loop
+            if (result.size() == 2) break;
+        }
+    
+        return result;
+    }
+};
+
+//Time: O(n^2)
+//Space: O(1)
+
+//Approach 2: Better approach
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        int n=nums.size();
+        unordered_map<int,int>ump;
+        for(auto i:nums)
+        {
+            ump[i]++;
+        }
+
+        vector<int> maxi;
+
+        for(auto i:ump)
+        {
+            if(i.second>n/3)
+            {
+                maxi.push_back(i.first);
+            }
+        }
+
+        return maxi;
+    }
+};
+
+//Time: O(n)
+//Space: O(n)

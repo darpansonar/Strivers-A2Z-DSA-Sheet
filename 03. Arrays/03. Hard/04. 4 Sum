@@ -1,0 +1,102 @@
+/*
+Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:
+1. 0 <= a, b, c, d < n
+2. a, b, c, and d are distinct.
+3. nums[a] + nums[b] + nums[c] + nums[d] == target
+You may return the answer in any order.
+
+Example:
+Input: nums = [1,0,-1,0,-2,2], target = 0
+Output: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+*/
+
+//Approach 1:
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        int n = nums.size();
+        // Use set to avoid duplicate quadruplets
+        set<vector<int>> st;
+
+        // First loop - pick first element
+        for (int i = 0; i < n; i++) 
+        {
+            // Second loop - pick second element
+            for (int j = i + 1; j < n; j++) 
+            {
+                // Third loop - pick third element
+                for (int k = j + 1; k < n; k++) 
+                {
+                    // Fourth loop - pick fourth element
+                    for (int l = k + 1; l < n; l++) 
+                    {
+                        // Calculate sum of four chosen numbers
+                        long long sum = (long long)nums[i] + nums[j] + nums[k] + nums[l];
+                        // Check if sum matches target
+                        if (sum == target) 
+                        {
+                            // Store quadruplet in sorted order
+                            vector<int> temp = {nums[i], nums[j], nums[k], nums[l]};
+                            sort(temp.begin(), temp.end());
+                            // Insert into set to ensure uniqueness
+                            st.insert(temp);
+                        }
+                    }
+                }
+            }
+        }
+        // Convert set into vector of quadruplets
+        return vector<vector<int>>(st.begin(), st.end());
+    }
+};
+
+//Time: O(n^4)
+//Space: O(n^3)
+
+//Approach 2:
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        int n=nums.size();
+        vector<vector<int>> res;
+
+        sort(nums.begin(), nums.end());
+
+        if(n<4) return res;
+        for(int i=0;i<n-3;i++)
+        {
+            if(i>0 && nums[i]==nums[i-1]) continue; //skip duplicates of i
+
+            for(int j=i+1;j<n-2;j++)
+            {
+                if(j>i+1 && nums[j]==nums[j-1]) continue; //skip duplicates of j
+                int left=j+1;
+                int right=n-1;
+
+                while(left<right)
+                {
+                    long long sum=static_cast<long long>(nums[i])+nums[j]+nums[left]+nums[right];
+                    if(sum<target) left++;
+                    else if(sum>target) right--;
+
+                    else
+                    {
+                        res.push_back({{nums[i],nums[j],nums[left],nums[right]}});
+                        left++;
+                        right--;
+
+                        //skip left duplicates
+                        while(left<right && nums[left]==nums[left-1]) left++;
+
+                        //skip right duplicates
+                        while(left<right && nums[right]==nums[right+1]) right--;
+                    }
+                } 
+            }
+        }
+        return res;
+    }
+};
+
+//Time: O(n^3)
+//Space: O(1)

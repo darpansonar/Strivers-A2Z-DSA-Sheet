@@ -13,6 +13,45 @@ Output: [-1,-1]
 */
 
 //Code:
+//Approach 1:
+class Solution {
+public:
+    int firstOcc(vector<int>& nums,int target)
+    {
+        //Linear search from left
+        int n=nums.size();
+        for(int i=0;i<n;i++)
+        {
+            if(nums[i]==target) return i;
+        }
+        return -1;
+    }
+
+    int lastOcc(vector<int>& nums,int target)
+    {
+        //Linear search from right
+        int n=nums.size();
+        for(int i=n-1;i>=0;i--)
+        {
+            if(nums[i]==target) return i;
+        }
+        return -1;
+    }
+
+    vector<int> searchRange(vector<int>& nums, int target) 
+    {
+        int first=firstOcc(nums,target);
+        if(first==-1) return {-1,-1};
+
+        int last=lastOcc(nums,target);
+        return {first,last};    
+    }
+};
+
+//Time: O(n)
+//Space: O(1)
+
+//Approach 2: Optimal
 class Solution {
 public:
     int firstOcc(vector<int>& nums,int target)

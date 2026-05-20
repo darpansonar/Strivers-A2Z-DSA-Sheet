@@ -81,4 +81,55 @@ public:
 //Time: O(n)
 //Space: O(1)
 
-//Approach 4:
+//Approach 4: Optimal
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+        //Array : 1 1 2 3 3 4 4 8 8
+        //Index : 0 1 2 3 4 5 6 7 8
+        //1st occurrence of a element = even index
+        //2nd occurrence of a element = odd index
+
+        //Before the single element, pair starts at even index
+        //After the single element, pair starts at odd index
+
+        int n=nums.size();
+
+        //Handling edge cases
+        if(n==1) return nums[0];
+        if(nums[0]!=nums[1]) return nums[0];
+        if(nums[n-2]!=nums[n-1]) return nums[n-1];
+
+        int low=1,high=n-2;
+
+        while(low<=high)
+        {
+            int mid=low+(high-low)/2;
+            //Unique element is found
+            if(nums[mid]!=nums[mid-1] && nums[mid]!=nums[mid+1])
+            {
+                return nums[mid];
+            }
+
+            //if mid is odd and its pair is correct with previous (even) index then that single element lies on it's right side
+            //OR
+            //if mid is even and its pair is correct with next (odd) index then that single element lies on it's right side
+            if((mid%2==1 && nums[mid]==nums[mid-1]) || 
+               (mid%2==0 && nums[mid]==nums[mid+1]))
+            {
+                low=mid+1;
+            }
+            
+            //else, that single element lies on it's left side
+            else
+            {
+                high=mid-1;
+            }
+        }
+        //Eventually, low==high
+        return -1;
+    }
+};
+
+//Time: O(log n)
+//Space: O(1)

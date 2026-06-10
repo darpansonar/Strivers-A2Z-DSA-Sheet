@@ -1,0 +1,115 @@
+/*
+Write an efficient algorithm that searches for a value target in an m x n integer matrix matrix. This matrix has the following properties:
+Integers in each row are sorted in ascending from left to right.
+Integers in each column are sorted in ascending from top to bottom.
+ 
+Example :
+Input: matrix = [[1,4,7,11,15],
+                [2,5,8,12,19],
+                [3,6,9,16,22],
+                [10,13,14,17,24],
+                [18,21,23,26,30]], target = 5
+Output: true
+*/
+
+Approach 1: Brute force
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int n = matrix.size();
+        int m = matrix[0].size();
+
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < m; j++)
+            {
+                if(matrix[i][j] == target)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+};
+
+//TC: O(n × m)
+//SC: O(1)
+
+//Approach 2: Better (using binary search)
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int n = matrix.size();
+        int m = matrix[0].size();
+
+        for(int i = 0; i < n; i++)
+        {
+            // Skip rows where target cannot exist
+            if(target < matrix[i][0] || target > matrix[i][m - 1])
+                continue;
+
+            int low = 0;
+            int high = m - 1;
+
+            while(low <= high)
+            {
+                int mid = low + (high - low) / 2;
+
+                if(matrix[i][mid] == target)
+                    return true;
+                else if(matrix[i][mid] < target)
+                    low = mid + 1;
+                else
+                    high = mid - 1;
+            }
+        }
+
+        return false;
+    }
+};
+
+//TC: O(n log m)
+//SC: O(1)
+
+//Approach 3: Optimal (staircase)
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        /*
+          Let, target =10 and mid=9 from given 1st testcase
+          if (mid==target), return true
+          else if(mid<target) i.e (9<10) then row++
+          else if(mid>target) i.e (14>10) then col--
+        */
+
+        int n = matrix.size();
+        int m = matrix[0].size();
+
+        // //Starting from top-right element bcoz everything to it's left is smaller and everything to it's bottom is greater
+        int row = 0;
+        int col = m - 1;
+
+        while(row < n && col >= 0)
+        {
+            if(matrix[row][col] == target)
+            {
+                return true;
+            }
+            else if(matrix[row][col] < target)
+            {
+                // Move down to larger values
+                row++;
+            }
+            else
+            {
+                // Move left to smaller values
+                col--;
+            }
+        }
+
+        return false;
+    }
+};
+
+//TC: O(n + m)
+//SC: O(1)

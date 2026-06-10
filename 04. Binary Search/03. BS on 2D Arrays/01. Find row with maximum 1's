@@ -1,0 +1,90 @@
+/*
+You are given a 2D binary array arr[][] consisting of only 1s and 0s. Each row of the array is sorted in non-decreasing order. Your task is to find and return the index of the first row that contains the maximum number of 1s. If no such row exists, return -1.
+
+Note:
+The array follows 0-based indexing.
+The number of rows and columns in the array are denoted by n.
+
+Example:
+Input: arr[][] = [[0,1,1,1],
+               [0,0,1,1],
+               [1,1,1,1],
+               [0,0,0,0]]
+Output: 2
+Explanation: Row 2 contains the most number of 1s (4 1s). Hence, the output is 2.
+*/
+
+//Approach 1: Brute force
+class Solution {
+  public:
+    int rowWithMax1s(vector<vector<int>> &arr) {
+        int n=arr.size();
+        int m=arr[0].size();
+        int ans=-1;
+        int maxCount=0;
+
+        for(int i=0;i<n);i++)
+        {
+            int count=0;
+            for(int j=0;j<m;j++)
+            {
+                if(arr[i][j]==1) count++;
+            }
+            if(count>maxCount) 
+            {
+                maxCount=count;
+                ans=i;
+            }
+        }
+        return ans;
+    }
+};
+
+//Time: O(n*m)
+//Space: O(1)
+
+//Approach 2: Optimal
+class Solution {
+  public:
+    int rowWithMax1s(vector<vector<int>> &arr) {
+        int n=arr.size();
+        int m=arr[0].size();
+        int maxCount=0;
+        int ans=-1;
+        
+        for(int i=0;i<n;i++)
+        {
+            int low=0;
+            int high=m-1;
+            int firstOne=m;//Assume that no 1 exists
+            
+            //find first occurence of 1
+            while(low<=high)
+            {
+                int mid=low+(high-low)/2;
+            
+                if(arr[i][mid]==1)
+                {
+                    firstOne=mid;
+                    high=mid-1;
+                }
+                else
+                {
+                    low=mid+1;
+                }
+            }
+            
+            int count=m-firstOne;
+            
+            if(count>maxCount)
+            {
+                maxCount=count;
+                ans=i;
+            }
+        }
+        return ans;
+    }
+};
+
+//Time: O(n log m)
+//Space: O(1)

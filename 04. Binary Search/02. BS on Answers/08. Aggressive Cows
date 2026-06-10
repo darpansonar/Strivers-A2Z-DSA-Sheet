@@ -1,0 +1,90 @@
+/*
+You are given an array with unique elements of stalls[], which denote the positions of stalls. You are also given an integer k which denotes the number of aggressive cows. The task is to assign stalls to k cows such that the minimum distance between any two of them is the maximum possible.
+
+Example:
+Input: stalls[] = [1, 2, 4, 8, 9], k = 3
+Output: 3
+Explanation: The first cow can be placed at stalls[0], 
+the second cow can be placed at stalls[2] and 
+the third cow can be placed at stalls[3]. 
+The minimum distance between cows in this case is 3, which is the largest among all possible ways.
+*/
+
+//Approach:
+class Solution {
+public:
+
+    // Checks whether it is possible to place
+    // k cows such that the minimum distance
+    // between any two cows is at least 'dist'
+    int canPlace(vector<int> &stalls, int k, int dist)
+    {
+        // Place the first cow in the first stall
+        int count = 1;
+        int lastPos = stalls[0];
+
+        // Try placing the remaining cows greedily
+        for(int i = 1; i < stalls.size(); i++)
+        {
+            // If current stall is at least 'dist'
+            // away from the last placed cow,
+            // place another cow here
+            if(stalls[i] - lastPos >= dist)
+            {
+                count++;
+                lastPos = stalls[i];
+            }
+        }
+
+        // If we could place at least k cows,
+        // then this distance is feasible
+        if(count >= k) return true;
+
+        return false;
+    }
+
+    int aggressiveCows(vector<int> &stalls, int k) {
+        
+        // Sort stalls so that cows can be placed
+        // from left to right in increasing order
+        sort(stalls.begin(), stalls.end());
+
+        int n = stalls.size();
+
+        // Minimum possible distance
+        int low = 1;
+
+        // Maximum possible distance
+        // (between first and last stall)
+        int high = stalls[n - 1] - stalls[0];
+
+        // Stores the largest feasible distance found
+        int ans = -1;
+
+        // Binary search on the answer
+        while(low <= high)
+        {
+            int mid = low + (high - low) / 2;
+
+            // Check if minimum distance = mid is possible
+            if(canPlace(stalls, k, mid))
+            {
+                // Store current answer
+                ans = mid;
+
+                // Try for a larger minimum distance
+                low = mid + 1;
+            }
+            else
+            {
+                // Distance too large, try smaller values
+                high = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+};
+
+//Time: O(n log n + n log(stalls[n-1] - stalls[0]))
+//Space: O(1)

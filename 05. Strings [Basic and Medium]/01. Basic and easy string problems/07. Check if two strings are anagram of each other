@@ -1,0 +1,61 @@
+/*
+Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+
+Example 1:
+Input: s = "anagram", t = "nagaram"
+Output: true
+
+Example 2:
+Input: s = "rat", t = "car"
+Output: false
+*/
+
+//Approach 1:
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if(s.length()!=t.length()) return false;
+        
+        sort(s.begin(),s.end());
+        sort(t.begin(),t.end());
+
+        if(s==t) return true;
+        return false;
+    }
+};
+
+//Time: O(n log n)
+//Space: O(log n)
+
+//Approach 2:
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if(s.length()!=t.length()) return false;
+
+        int n=s.length();
+        vector<int> freq(26,0);
+        
+        for(int i=0;i<n;i++)
+        {
+            // Increment frequency for each character in s
+            freq[s[i]-'a']++;
+        }
+
+        for(int i=0;i<n;i++)
+        {
+            // Decrement frequency for each character in t
+            freq[t[i]-'a']--;
+        }
+
+        // Check if all frequencies are zero, meaning both strings have the same characters
+        for(int i=0;i<26;i++)
+        {
+            if(freq[i]!=0) return false;
+        }
+        return true;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

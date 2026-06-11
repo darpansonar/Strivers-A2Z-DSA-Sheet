@@ -1,0 +1,77 @@
+/*
+Write a function to find the longest common prefix string amongst an array of strings.
+If there is no common prefix, return an empty string "".
+
+Example:
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+*/
+
+//Approach 1:
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if(strs.empty()) return "";
+
+        int n=strs.size();//no. of strings
+
+        sort(strs.begin(),strs.end());
+
+        string first_str=strs[0]; //first string
+        string last_str=strs[n-1]; //last string
+
+        int minLength=min(first_str.size(),last_str.size()); //min length between first and last string after sorting
+
+        string res="";
+
+        for(int i=0;i<minLength;i++)
+        {
+            if(first_str[i]!=last_str[i]) break;//stop if chars differ
+
+            res+=first_str[i];//add matching chars
+        }
+        return res;
+    }
+};
+
+//Tine: O(nlogn * m)
+//Space: O(m + logn)
+where:
+n = number of strings
+m = length of the shortest string
+
+//Approach 2:
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        string ans = "";
+        //i = character index (column index)
+        //j = string index (row index)
+
+        // Traverse each character of the first string
+        for(int i = 0; i < strs[0].size(); i++) {
+            
+            // Current character from the first string
+            char ch = strs[0][i];
+
+            // Compare this character with all other strings
+            for(int j = 1; j < strs.size(); j++) {
+                
+                // If:
+                // 1. Current index exceeds the length of any string
+                // OR
+                // 2. Characters don't match
+                // Then common prefix ends here
+                if(i >= strs[j].size() || strs[j][i] != ch)
+                    return ans;
+            }
+
+            // Character matched in all strings
+            ans.push_back(ch);
+        }
+        return ans;
+    }
+};
+
+//Tine: O(n*m)
+//Space: O(m)

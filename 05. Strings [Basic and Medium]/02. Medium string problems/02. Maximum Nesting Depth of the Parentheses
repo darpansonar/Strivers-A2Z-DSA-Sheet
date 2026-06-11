@@ -1,0 +1,78 @@
+/*
+Given a valid parentheses string s, return the nesting depth of s. The nesting depth is the maximum number of nested parentheses.
+
+Example:
+Input: s = "(1+(2*3)+((8)/4))+1"
+Output: 3
+Explanation:
+Digit 8 is inside of 3 nested parentheses in the string.
+*/
+
+//Approach 1:
+class Solution {
+private:
+    int totalLeftBrackets(string s,int pos)
+    {
+        int cnt=0;
+        for(int i=0;i<=pos;i++)
+        {
+            if(s[i]=='(') cnt++;
+        }
+        return cnt;
+    }
+
+    int totalRightBrackets(string s,int pos)
+    {
+        int cnt=0;
+        for(int i=0;i<=pos;i++)
+        {
+            if(s[i]==')') cnt++;
+        }
+        return cnt;
+    }
+
+public:
+    int maxDepth(string s) {
+        int maxi=0;
+        for(int i=0;i<s.size();i++)
+        {
+            if(s[i]=='(')
+            {
+                //The depth of any character in the VPS is the ( number of left brackets before it ) - ( number of right brackets before it )
+                int depth=totalLeftBrackets(s,i) - totalRightBrackets(s,i);
+                maxi=max(maxi,depth);
+            }
+        }
+        return maxi;
+    }
+};
+
+//Time: O(n^2)
+//Space: O(1)
+
+//Approach 2:
+class Solution {
+public:
+    int maxDepth(string s) {
+        int currDepth=0;
+        int maxDepth=0;
+
+        for(char c:s)
+        {
+            if(c=='(')
+            {
+                currDepth++;
+                maxDepth=max(currDepth,maxDepth);
+            }
+            else if(c==')')
+            {
+                currDepth--;
+            }
+        }
+
+        return maxDepth;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

@@ -1,0 +1,47 @@
+/*
+Given a string s, sort it in decreasing order based on the frequency of the characters. The frequency of a character is the number of times it appears in the string.
+Return the sorted string. If there are multiple answers, return any of them.
+
+Example:
+Input: s = "tree"
+Output: "eert"
+Explanation: 'e' appears twice while 'r' and 't' both appear once.
+So 'e' must appear before both 'r' and 't'. Therefore "eetr" is also a valid answer.
+*/
+
+//Approach:
+class Solution {
+public:
+    string frequencySort(string s) {
+        int n=s.length();
+        unordered_map<char,int> mpp;
+
+        //count freq
+        for(char ch:s)
+        {
+            mpp[ch]++;
+        }
+
+        //store {freq,char}
+        vector<pair<int,char>> freq;
+
+        for(auto it:mpp)
+        {
+            freq.push_back({it.second,it.first});
+        }
+
+        //sort by frequency in decreasing order
+        sort(freq.begin(),freq.end(),greater<pair<int,char>>());
+
+        string res="";
+        for(auto it:freq)
+        {
+            res.append(it.first,it.second);
+        }
+        return res;
+    }
+};
+
+//Time: O(n + k logk)
+//Space: O(k)
+where, n is the length of the string and k is the constant 26 for the alphabet.

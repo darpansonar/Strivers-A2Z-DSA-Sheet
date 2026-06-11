@@ -1,0 +1,50 @@
+/*
+Given two strings s and goal, return true if and only if s can become goal after some number of shifts on s.
+A shift on s consists of moving the leftmost character of s to the rightmost position.
+For example, if s = "abcde", then it will be "bcdea" after one shift.
+
+Example:
+Input: s = "abcde", goal = "cdeab"
+Output: true
+*/
+
+//Approach 1:
+class Solution {
+public:
+    bool rotateString(string s, string goal) {
+        int cnt=0;
+        int n=s.length();
+
+        if(s.length()!=goal.length()) return false;
+
+        while(s!=goal)
+        {
+            // Rotate string s to the left by 1 position
+            s=s.substr(1,s.length()) + s[0];
+
+            cnt++;
+            if(cnt>n) return false;
+        }
+        return true;
+    }
+};
+
+//Time: O(n^2)
+//Space: O(n)
+
+//Approach 2:
+class Solution {
+public:
+    // Check if goal is a rotation of s using string doubling method
+    bool rotateString(string& s, string& goal) {
+        // Strings must be the same length to be rotations of each other
+        if (s.length() != goal.length()) return false;
+        
+        // Concatenate s with itself and check if goal exists in it
+        string doubledS = s + s;
+        return doubledS.find(goal) != string::npos;
+    }
+};
+
+//Time: O(n)
+//Space: O(n)

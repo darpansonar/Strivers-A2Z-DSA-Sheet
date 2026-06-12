@@ -1,0 +1,100 @@
+/*
+Given a string s, return the longest palindromic substring in s.
+
+Example 1:
+Input: s = "babad"
+Output: "bab"
+Explanation: "aba" is also a valid answer.
+
+Example 2:
+Input: s = "cbbd"
+Output: "bb"
+*/
+
+//Approach 1: Generate Substring + Check
+class Solution {
+private:
+    bool isPalindrome(string s)
+    {
+        int left = 0;
+        int right = s.length() - 1;
+
+        while (left < right)
+        {
+            if (s[left] != s[right])
+                return false;
+
+            left++;
+            right--;
+        }
+        return true;
+    }
+
+public:
+    string longestPalindrome(string s) {
+        int n = s.length();
+        string ans = "";
+
+        // Generate all substrings
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = i; j < n; j++)
+            {
+                string sub = s.substr(i, j - i + 1);
+
+                // Check palindrome
+                if (isPalindrome(sub))
+                {
+                    if (sub.length() > ans.length())
+                        ans = sub;
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+//Time: O(n^3)
+//Space: O(n)
+
+//Approach 2: Indices-Based Check
+class Solution {
+private:
+    // Check palindrome using indices instead of creating substring
+    bool isPalindrome(string &s, int left, int right)
+    {
+        while (left < right)
+        {
+            if (s[left] != s[right])
+                return false;
+
+            left++;
+            right--;
+        }
+        return true;
+    }
+
+public:
+    string longestPalindrome(string s) {
+        int n = s.length();
+        int start = 0, maxLen = 1;
+
+        for (int i = 0; i < n; i++)
+        {
+            // Only check substrings longer than current answer
+            for (int j = i + maxLen; j < n; j++)
+            {
+                if (isPalindrome(s, i, j))
+                {
+                    start = i;
+                    maxLen = j - i + 1;
+                }
+            }
+        }
+
+        return s.substr(start, maxLen);
+    }
+};
+
+//Time: O(n^3)
+//Space: O(1)

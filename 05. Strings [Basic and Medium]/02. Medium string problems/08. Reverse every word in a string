@@ -1,0 +1,55 @@
+/*
+Given an input string s, reverse the order of the words.
+A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space.
+Return a string of the words in reverse order concatenated by a single space.
+Note that s may contain leading or trailing spaces or multiple spaces between two words. The returned string should only have a single space separating the words. Do not include any extra spaces.
+
+Example:
+Input: s = "the sky is blue"
+Output: "blue is sky the"
+*/
+
+//Approach:
+class Solution {
+public:
+    string reverseWords(string s) {
+        int i=s.size()-1;
+        string result="";
+
+        // Traverse string from right to left
+        while(i>=0)
+        {
+            // Skip spaces at the current position
+            while(i>=0 && s[i]==' ')
+            {
+                i--;
+            }
+
+            // If pointer is out of bounds, break
+            if(i<0) break;
+
+            // Mark the end of the current word
+            int end=i;
+
+            while(i>=0 && s[i]!=' ')
+            {
+                i--;
+            }
+
+            // Extract the current word
+            string word=s.substr(i+1,end-i);
+
+            // Add space before appending next word if result is not empty
+            if(!result.empty())
+            {
+                result+=' ';
+            }
+
+            result+=word;
+        }
+        return result;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

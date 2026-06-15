@@ -1,0 +1,42 @@
+/*
+Given a positive integer n, count all possible distinct binary strings of length n such that there are no consecutive 1’s.
+
+Example:
+Input: n = 3
+Output: 5
+Explanation: 5 strings are ("000", "001", "010", "100", "101").
+*/
+
+//Approach:
+class Solution {
+  public:
+    void generate(int n,string curr,int &count)
+    {
+        if(curr.length()==n)
+        {
+            count++;
+            return;
+        }
+        
+        // Always try adding '0'
+        generate(n,curr+"0",count);
+        
+        // Add '1' only if previous char is not '1'
+        if(curr.empty() || curr.back()!='1')
+        {
+            generate(n,curr+"1",count);
+        }
+    }
+    
+    int countStrings(int n) {
+        // total no. of permutations = n!
+        string curr="";
+        int count=0;
+        generate(n,curr,count);
+        
+        return count;
+    }
+};
+
+//Time Complexity: O(2^n)
+//Space Complexity: O(n) 

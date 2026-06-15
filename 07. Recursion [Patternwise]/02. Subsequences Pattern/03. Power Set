@@ -1,0 +1,43 @@
+/*
+Given a string s, generate all possible subsequences of the string (including the empty subsequence) and return them in lexicographical order.
+A subsequence is obtained by deleting zero or more characters from the string without changing the relative order of the remaining characters.
+
+Example:
+Input : s = "abc"
+Output: ["","a", "ab", "abc", "ac", "b", "bc", "c"]
+Explanation: There are a total of 8 non-empty subsequences for the given string. 
+These subsequences are listed above in lexicographical order.
+*/
+
+//Approach:
+class Solution {
+  public:
+    void solve(string &s,string &str,vector<string> &res,int i)
+    {
+        if(i==s.length())
+        {
+            res.push_back(str);
+            return;
+        }
+        
+        // Include current character
+        str.push_back(s[i]);
+        solve(s,str,res,i+1);
+        
+        str.pop_back();// Backtrack
+        solve(s,str,res,i+1);// Exclude current character
+    }
+    
+    vector<string> powerSet(string &s) {
+        // Code here
+        vector<string> res;
+        string str="";
+        solve(s,str,res,0);
+        
+        sort(res.begin(),res.end());
+        return res;
+    }
+};
+
+//Time: O(n^2 * 2^n)
+//Space: O(n * 2^n)

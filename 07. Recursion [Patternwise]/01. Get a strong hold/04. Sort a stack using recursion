@@ -1,0 +1,79 @@
+/*
+Given a stack of integers st[]. Sort the stack in ascending order (smallest element at the bottom and largest at the top).
+
+Examples:
+
+Input: st[] = [41, 3, 32, 2, 11]
+Output: [41, 32, 11, 3, 2]
+Explanation: After sorting, the smallest element (2) is at the bottom and the largest element (41) is at the top.
+
+|  11  |
+|  2   |
+|  32  |
+|  3   |
+|  41  |
+|______|
+
+=> output:
+|  41  | 
+|  32  |
+|  11  |
+|  3   |
+|  2   |
+|______|
+*/
+
+//Approach:
+// using recursion
+// keep the top element at side
+// then recursively keep the top elemtent aside
+// while stack is empty, insert the element that is kept aside in sorted way by comparing with the top element
+// similarly, insert other element in sorted way
+
+class Solution {
+  public:
+    //Recursive function to insert an item 'num' in sorted way
+    void sortedInsert(stack<int> &st,int num)
+    {
+        // If stack is empty OR top is smaller → push directly
+        // Else:
+        //      Remove top
+        //      Recursively insert element
+        //      Put removed element back
+        
+        //base case
+        if(st.empty() || (!st.empty() && st.top()<num))
+        {
+            st.push(num);
+            return;
+        }
+        
+        int n=st.top();
+        st.pop();
+        
+        //recursive call
+        sortedInsert(st,num);
+        
+        st.push(n);
+    }
+    
+    void sortStack(stack<int> &st) {
+        //Take top element out
+        //Sort the remaining stack
+        //Insert the removed element back in the correct position
+        
+        //base case
+        if(st.empty()) return;
+        
+        int num=st.top();
+        st.pop();
+        
+        //recursive call
+        sortStack(st);
+        
+        sortedInsert(st,num);
+    }
+};
+
+//Time Complexity: O(n^2)
+//Space Complexity: O(n)

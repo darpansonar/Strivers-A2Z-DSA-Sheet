@@ -1,0 +1,48 @@
+/*
+You are given a stack st[]. You have to reverse the stack.
+Note: The input array represents the stack from bottom to top (last element is the top). The output is displayed by printing elements from top to bottom after reversal.
+
+Example:
+Input: st[] = [1, 2, 3, 4]
+Output: [1, 2, 3, 4]
+Explanation: After reversing, the elements of stack are in opposite order.
+*/
+
+//Approach:
+class Solution {
+  public:
+    //First, we will keep the stack top aside
+    //Use recurion to reverse remaining stack
+    //While coming back, insert at bottom
+    void insertAtBottom(stack<int> &st,int element)
+    {
+        //base case
+        if(st.empty())
+        {
+            st.push(element);
+            return;
+        }
+        
+        int num=st.top();
+        st.pop();
+        
+        //recursive call
+        insertAtBottom(st,element);
+        st.push(num);
+    }
+
+    void reverseStack(stack<int> &st) {
+        // code here
+        if(st.empty()) return;
+        
+        int x=st.top();
+        st.pop();
+        
+        reverseStack(st);
+        
+        insertAtBottom(st,x);
+    }
+};
+
+//Time Complexity: O(n^2)
+//Space Complexity: O(n)

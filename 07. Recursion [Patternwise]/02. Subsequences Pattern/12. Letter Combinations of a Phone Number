@@ -1,0 +1,78 @@
+/*
+Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+Example 1:
+
+Input: digits = "23"
+Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+
+Example 2:
+Input: digits = "2"
+Output: ["a","b","c"]
+ 
+Constraints:
+1 <= digits.length <= 4
+digits[i] is a digit in the range ['2', '9'].
+
+0 -
+1 -
+2 - abc
+3 - def
+4 - ghi
+5 - jkl
+6 - mno
+7 - pqrs
+8 - tuv
+9 - wxyz
+*/
+
+//Approach:
+class Solution {
+public:
+    void solve(string digits, vector<string> &res, string s, string combos[], int i)
+    {
+        // Base case: If we have processed all digits, store the formed string.
+        if(i==digits.size())
+        {
+            res.push_back(s);
+            return;
+        }
+
+        // Convert current digit character to integer
+        int digit=digits[i]-'0';
+
+        // Try every letter mapped to the current digit
+        for(int j=0;j<combos[digit].size();j++)
+        {
+            // Recursively call function, add the current letter and move to the next digit
+            solve(digits,res,s+combos[digit][j],combos,i+1);
+        }
+    }
+    vector<string> letterCombinations(string digits) {
+        if(digits.empty()) return {};
+
+        // Mapping of digits to letters
+        string combos[]={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        vector<string> res;
+        string s;
+        solve(digits,res,s,combos,0);
+        return res;
+    }
+};
+
+// Time Complexity: O(n * 4^n)
+// Auxiliary Space: O(n)
+// Space Complexity (including output): O(n * 4^n)
+
+/*
+n digits
+↓
+each digit gives at most 4 choices
+↓
+4^n combinations
+↓
+each combination has length n
+↓
+O(n * 4^n)
+*/

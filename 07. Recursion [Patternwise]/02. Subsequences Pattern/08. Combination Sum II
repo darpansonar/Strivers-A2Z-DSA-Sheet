@@ -1,0 +1,58 @@
+/*
+Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
+Each number in candidates may only be used once in the combination.
+Note: The solution set must not contain duplicate combinations.
+
+Example:
+Input: candidates = [10,1,2,7,6,1,5], target = 8
+Output: 
+[
+[1,1,6],
+[1,2,5],
+[1,7],
+[2,6]
+]
+*/
+
+//Approach:
+class Solution {
+public:
+    void solve(vector<int>& arr, vector<vector<int>> &res, vector<int> &combn,int start, int target)
+    {
+        if(target==0)
+        {
+            res.push_back(combn);
+            return;
+        }
+        
+        
+        for(int i=start;i<arr.size();i++)
+        {
+            // Skip duplicates at the same level
+            if(i > start && arr[i] == arr[i - 1])
+                continue;
+
+            if(arr[i]>target) break;
+            
+            combn.push_back(arr[i]);
+
+            //Take curr element → move to the next index (i+1)
+            solve(arr,res,combn,i+1,target-arr[i]); //inclusion
+
+            combn.pop_back(); //backtracking
+            //In loop-based backtracking, no explicit exclusion call
+            //Becoz, The loop itself handles the "skip/exclude" cases.
+        }
+    }
+    vector<vector<int>> combinationSum2(vector<int>& arr, int target) {
+        sort(arr.begin(),arr.end());
+
+        vector<vector<int>> res;
+        vector<int> combn;
+        solve(arr,res,combn,0,target);
+        return res;
+    }
+};
+
+// Time Complexity: O(2^n)
+// Space Complexity: O(n * 2^n)

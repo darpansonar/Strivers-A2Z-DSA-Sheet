@@ -1,0 +1,67 @@
+/*
+Given a string num that contains only digits and an integer target, return all possibilities to insert the binary operators '+', '-', and/or '*' between the digits of num so that the resultant expression evaluates to the target value.
+Note that operands in the returned expressions should not contain leading zeros.
+Note that a number can contain multiple digits.
+
+Example 1:
+Input: num = "123", target = 6
+Output: ["1*2*3","1+2+3"]
+Explanation: Both "1*2*3" and "1+2+3" evaluate to 6.
+
+Example 2:
+Input: num = "232", target = 8
+Output: ["2*3+2","2+3*2"]
+Explanation: Both "2*3+2" and "2+3*2" evaluate to 8.
+*/
+
+//Approach:
+class Solution {
+public:
+    void solve(string& num, int target, int start, long long current_value, long long last_operand, string expression, vector<string>& result)
+    {
+        // Base case: If we've reached the end of the string
+        if(start==num.size())
+        {
+            // If the expression evaluates to the target, add it to result
+            if(current_value==target)
+                result.push_back(expression);
+            return;
+        }
+
+        // Loop through all substrings starting from 'start' index
+        for(int i=start;i<num.length();i++)
+        {
+            if(i>start && num[start]=='0') return;
+
+            // Get the current number
+            string current_num=num.substr(start,i-start+1);
+            long long current_num_val=stoll(current_num);
+            
+            // If we are at the first number, just start the expression
+            if(start==0)
+            {
+                solve(num, target, i + 1, current_num_val, current_num_val, current_num, result);
+            } 
+            
+            else {
+                // Add the current number with '+'
+                solve(num, target, i + 1, current_value + current_num_val, current_num_val, expression + "+" + current_num, result);
+                
+                // Add the current number with '-'
+                solve(num, target, i + 1, current_value - current_num_val, -current_num_val, expression + "-" + current_num, result);
+                
+                // Add the current number with '*'
+                solve(num, target, i + 1, current_value - last_operand + last_operand * current_num_val, last_operand * current_num_val, expression + "*" + current_num, result);
+            }
+        }
+    }
+    vector<string> addOperators(string num, int target) {
+        vector<string> result;  
+        // Start with empty expression
+        solve(num, target, 0, 0, 0, "", result);
+        return result;
+    }
+};
+
+//Time Complexity: O(4^n)
+//Space Complexity: O(n)

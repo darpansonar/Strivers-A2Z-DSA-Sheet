@@ -1,0 +1,82 @@
+/*
+Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
+
+Example 1:
+Input: s = "aab"
+Output: [["a","a","b"],["aa","b"]]
+
+A partition means: Cut the string into pieces
+Possible ways:
+
+Partition 1 : a | a | b
+Substrings: ["a", "a", "b"]
+All are palindromes 
+
+Partition 2 : aa | b
+Substrings: ["aa", "b"]
+Both are palindromes 
+
+Partition 3 : a | ab
+Substrings: ["a", "ab"]
+ab is not a palindrome
+
+Partition 4 : aab
+aab is not a palindrome 
+Therefore answer:
+[["a","a","b"],["aa","b"]]
+*/
+
+//Approach:
+class Solution {
+public:
+    bool isPalindrome(string s)
+    {
+        int left=0;
+        int right=s.length()-1;
+
+        while(left<right)
+        {
+            if(s[left]!=s[right]) return false;
+
+            left++;
+            right--;
+        }
+        return true;
+    }
+
+    // Backtracking function to generate all palindrome partitions
+    void solve(string s, vector<vector<string>> &res, vector<string> &path, int start)
+    {
+        // Base case:
+        // If we have reached the end of the string, one valid partition is formed.
+        if(start==s.length())
+        {
+            res.push_back(path);
+            return;
+        }
+
+        for(int end=start;end<s.length();end++)
+        {
+            // Extract substring from start to end
+            string subpart=s.substr(start,end-start+1);
+
+            if(isPalindrome(subpart))
+            {
+                path.push_back(subpart); // Choose
+                solve(s,res,path,end+1); // Recurse for the remaining string
+                path.pop_back(); // Backtrack
+            }
+        }
+    }
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>> res;
+        vector<string> path;
+        solve(s,res,path,0);
+
+        return res;
+    }
+};
+
+// Time Complexity: O(n² * 2ⁿ)
+// Space Complexity: O(n)      // auxiliary space
+// Output Space: O(n * 2ⁿ)

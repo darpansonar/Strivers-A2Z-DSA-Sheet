@@ -1,0 +1,43 @@
+/*
+You are given a string s and a list dictionary[] of words. Your task is to determine whether the string s can be formed by concatenating one or more words from the dictionary[].
+Note: From dictionary[], any word can be taken any number of times and in any order.
+
+Examples:
+Input: s = "ilike", dictionary[] = ["i", "like", "gfg"]
+Output: true
+Explanation: s can be breakdown as "i like".
+
+Input: s = "ilikemangoes", dictionary[] = ["i", "like", "man", "india", "gfg"]
+Output: false
+Explanation: s cannot be formed using dictionary[] words.
+*/
+
+//Approach:
+class Solution {
+  public:
+    bool solve(string &s, vector<string> &dictionary, int i)
+    {
+        if(i==s.length()) return true;
+        
+        string prefix="";
+        for(int j=i;j<s.length();j++)
+        {
+            prefix = prefix + s[j];
+            
+            // if the prefix s[i..j] is a dictionary word and rest of the string can also be broken into valid words, return true
+            if(find(dictionary.begin(),dictionary.end(),prefix) != dictionary.end()
+            && solve(s,dictionary,j+1))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    bool wordBreak(string &s, vector<string> &dictionary) {
+        // code here
+        return solve(s,dictionary,0);
+    }
+};
+
+// Time Complexity: O(2^n)
+// Space Complexity: O(n)

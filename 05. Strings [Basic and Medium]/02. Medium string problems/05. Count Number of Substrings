@@ -1,0 +1,126 @@
+/*
+You are given a string s consisting of lowercase characters and an integer k, You have to count all possible substrings that have exactly k distinct characters.
+
+Examples :
+Input: s = "abc", k = 2
+Output: 2
+Explanation: Possible substrings are ["ab", "bc"]
+
+Input: s = "aba", k = 2
+Output: 3
+Explanation: Possible substrings are ["ab", "ba", "aba"]
+
+Input: s = "aa", k = 1
+Output: 3
+Explanation: Possible substrings are ["a", "a", "aa"]
+*/
+
+//Code:
+//Approach 1:
+class Solution {
+  public:
+    int atMostKDistinct(string &s,int k)
+    {
+        int left=0;
+        int res=0;
+        
+        unordered_map<char,int> freq;
+        
+        for(int right=0;right<s.size();right++)
+        {
+            // Add current character
+            freq[s[right]]++;
+            
+            // Shrink window if distinct characters exceed k
+            while(freq.size()>k)
+            {
+                freq[s[left]]--;
+                if(freq[s[left]]==0) freq.erase(s[left]);
+                left++;
+            }
+            // Count substrings in current window
+            res+=(right-left+1);
+        }
+        return res;
+    }
+    
+    int countSubstr(string& s, int k) {
+        // Using sliding window
+        // Exactly k = atMost(k) - atMost(k-1)
+        return atMostKDistinct(s,k)-atMostKDistinct(s,k-1);
+    }
+};
+
+//Time: O(n^2)
+//Space: O(k)
+
+//Approach 2:
+class Solution {
+public:
+    long long atMostKDistinct(string &s, int k)
+    {
+        // No valid substring can have less than 0 distinct characters
+        if(k < 0) return 0;
+
+        int left = 0;          // Left pointer of sliding window
+        long long res = 0;     // Stores count of valid substrings
+        vector<int> freq(26, 0);
+
+        int distinct = 0;      // Number of distinct characters in current window
+
+        for(int right = 0; right < s.size(); right++)
+        {
+            // If this character is appearing for the first time
+            // in the current window, increase distinct count
+            if(freq[s[right] - 'a'] == 0)
+                distinct++;
+
+            // Add current character to the window
+            freq[s[right] - 'a']++;
+
+            // Shrink the window until it has at most k distinct characters
+            while(distinct > k)
+            {
+                freq[s[left] - 'a']--;
+
+                // If frequency becomes 0, one distinct character is removed
+                if(freq[s[left] - 'a'] == 0)
+                    distinct--;
+
+                left++;
+            }
+
+            /*
+                Window [left ... right] now has at most k distinct characters.
+
+                All substrings ending at 'right' and starting from
+                any index between left and right are valid.
+
+                Example:
+                left = 2, right = 5
+
+                Valid substrings ending at 5:
+                [5..5]
+                [4..5]
+                [3..5]
+                [2..5]
+
+                Count = right - left + 1
+            */
+            res += (right - left + 1);
+        }
+
+        return res;
+    }
+
+    int countSubstr(string &s, int k)
+    {
+        // Exactly k distinct characters
+        // = (substrings with at most k distinct)
+        // - (substrings with at most k-1 distinct)
+        return atMostKDistinct(s, k) - atMostKDistinct(s, k - 1);
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

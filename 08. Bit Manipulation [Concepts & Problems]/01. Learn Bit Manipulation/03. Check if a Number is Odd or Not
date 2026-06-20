@@ -1,0 +1,36 @@
+/*
+Given a positive integer n, determine whether it is odd or even. Return true if the number is even and false if the number is odd.
+
+Example:
+Input: n = 15
+Output: false
+Explanation: The number is not divisible by 2, Odd number.
+*/
+
+//Code:
+//Approach 1:
+class Solution {
+  public:
+    bool isEven(int n) {
+        if(n%2==0)return true;
+        return false;
+    }
+};
+
+//Time: O(1)
+//Space: O(1)
+
+//Approach 2:
+class Solution {
+  public:
+    bool isEven(int n) {
+        // 13 = 1 1 0 1
+        // it represents 8 4 2 1 i.e, if 1st bit is 1,then it is odd
+        if(n&1 != 0)
+            return false;
+        else return true;
+    }
+};
+
+//Time: O(1)
+//Space: O(1)

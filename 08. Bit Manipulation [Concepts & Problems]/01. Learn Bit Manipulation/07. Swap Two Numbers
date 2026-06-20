@@ -1,0 +1,24 @@
+/*
+Given two numbers a and b, you need to swap their values so a holds the value of b and b holds the value of a. Just write the code to swap values of a and b at the specified place.
+
+Example:
+Input: a = 1 b = 2
+Output: 2 1
+Explanation: Initially a = 1 and b = 2, now a = 2 and b = 1.
+*/
+
+//Code:
+class Solution {
+  public:
+    pair<int, int> get(int a, int b) {
+        //WKT, n^n=0
+        a=a^b;
+        b=a^b; // b=(a^b)^b=a
+        a=a^b; // a=(a^b)^b=(a^b)^a=b
+        
+        return {a,b};
+    }
+};
+
+//Time: O(1)
+//space: O(1)

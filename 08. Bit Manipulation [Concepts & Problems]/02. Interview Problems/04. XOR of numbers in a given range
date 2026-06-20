@@ -1,0 +1,59 @@
+/*
+Given two integers L and R. Find the XOR of the elements in the range [L , R].
+
+Example:
+Input : L = 3 , R = 5
+Output : 2
+Explanation : answer = (3 ^ 4 ^ 5) = 2.
+*/
+
+//Code:
+//Approach 1:
+class Solution {
+public:
+    /* Function to find the XOR of numbers from L to R
+    int findRangeXOR(int l, int r)
+    {			
+    		int ans = 0;
+    		for(int i=l; i <= r; i++) 
+        {
+    		    ans ^= i;
+    		}
+    		return ans;
+	  }
+};
+
+//Time: O(n)
+//Space: O(1)
+
+//Approach 2:
+class Solution {
+private:
+    /* Function to find the XOR of numbers from 1 to n*/
+    int XORtillN(int n) 
+    {
+        // 0               = 0
+        // 0^1             = 1
+        // 0^1^2           = 3
+        // 0^1^2^3         = 0
+        // 0^1^2^3^4       = 4
+        // 0^1^2^3^4^5     = 1
+        // 0^1^2^3^4^5^6   = 7
+        // 0^1^2^3^4^5^6^7 = 0
+
+        if(n%4==1) return 1;
+        if(n%4==2) return n+1;
+        if(n%4==3) return 0;
+        return n; //when n%4==0
+    }
+    
+public:
+    /* Function to find the XOR of numbers from L to R*/
+    int findRangeXOR(int l, int r)
+    {			
+		    return XORtillN(l-1) ^ XORtillN(r);
+	  }
+};
+
+//Time: O(1)
+//Space: O(1)

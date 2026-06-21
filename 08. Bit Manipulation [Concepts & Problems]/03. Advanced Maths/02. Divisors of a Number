@@ -1,0 +1,65 @@
+/*
+Given an integer n, return all the divisors of n in the ascending order.
+ 
+Example:
+Input : n = 20
+Output: 1 2 4 5 10 20
+Explanation: 20 is completely divisible by 1, 2, 4, 5, 10 and 20.
+*/
+
+//Code:
+//Approach 1:
+class Solution {
+  public:
+    void print_divisors(int n) {
+        for(int i=1;i<=n;i++)
+        {
+            if(n%i==0)
+                cout<<i<<" ";
+        }
+    }
+};
+        
+//Time: O(n)
+//Space: O(n)
+
+//Approach 2:
+class Solution {
+  public:
+    void print_divisors(int n) {
+        // To store the divisors;
+        vector<int> ans;
+        
+        int sqrtN = sqrt(n);
+        
+        // Iterate from 1 to sqrtN
+        for(int i=1; i <= sqrtN; i++) {
+            
+            // If a divisor is found
+            if(n % i == 0) 
+            {
+                //Add it to the answer
+                ans.push_back(i);
+                
+                // If i divides n, then n/i also divides n
+                // Add both
+                // i != n/i avoids duplicates (important for perfect squares)
+                if(i != n / i) 
+                {
+                    ans.push_back(n/i);
+                }
+            }
+        }
+        
+        // Sorting the result 
+        sort(ans.begin(), ans.end());
+        
+        for(int i=0;i<ans.size();i++)
+        {
+            cout<<ans[i]<<" ";
+        }
+    }
+};
+        
+//Time: O(sqrt(n))
+//Space: O(2*sqrt(n))    

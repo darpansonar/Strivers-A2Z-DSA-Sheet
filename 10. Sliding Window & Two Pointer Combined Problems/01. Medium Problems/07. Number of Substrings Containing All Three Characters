@@ -1,0 +1,82 @@
+/*
+Given a string s consisting only of characters a, b and c.
+Return the number of substrings containing at least one occurrence of all these characters a, b and c.
+
+Example:
+Input: s = "abcabc"
+Output: 10
+Explanation: The substrings containing at least one occurrence of the characters a, b and c are "abc", "abca", "abcab", "abcabc", "bca", "bcab", "bcabc", "cab", "cabc" and "abc" (again). 
+*/
+
+//Code:
+//Approach 1:
+class Solution {
+public:
+    int numberOfSubstrings(string s) 
+    {
+        int n=s.length();
+        int count=0;
+
+        for(int i=0;i<n;i++)
+        {
+            vector<int> freq(3,0);
+            for(int j=i;j<n;j++)
+            {
+                freq[s[j]-'a']++;
+                if(freq[0]>0 && freq[1]>0 && freq[2]>0) count++;
+            }
+        }
+        return count;
+    }
+};
+
+//Time: O(n^2)
+//Space: O(1)
+
+//Approach 2:
+class Solution {
+public:
+    int numberOfSubstrings(string s) 
+    {
+        vector<int> freq(3,0);
+        int left=0,count=0;
+
+        // Expand the window by moving right
+        for(int right=left;right<s.length();right++)
+        {
+            // Include current character in the window
+            freq[s[right]-'a']++;
+
+            // Window contains at least one 'a', one 'b', and one 'c'
+            while(freq[0]>0 && freq[1]>0 && freq[2]>0)
+            {
+                /*
+                    Current window [left...right] is valid.
+                    If [left...right] contains a,b,c,then all substrings obtained by extending this window to the right are also valid.
+
+                    Number of such substrings = s.length() - right
+
+                    Example:
+                    right = 2 in "abcabc"
+
+                    Valid substrings:
+                    abc
+                    abca
+                    abcab
+                    abcabc
+
+                    Count added = 6 - 2 = 4
+                */
+                count+=s.length()-right;
+
+                // Try to shrink the window from the left to find more valid starting positions
+                freq[s[left]-'a']--;
+                left++;
+            }
+        }
+        return count;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

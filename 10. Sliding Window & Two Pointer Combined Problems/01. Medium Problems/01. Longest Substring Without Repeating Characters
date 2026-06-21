@@ -1,0 +1,69 @@
+/*
+Given a string s, find the length of the longest substring without duplicate characters.
+
+Example:
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3. Note that "bca" and "cab" are also correct answers.
+*/
+
+//Code:
+//Approach 1:
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        //Expand right
+        // If duplicate found → move left until duplicate removed
+        // Update max length
+        int n=s.length();
+        int l=0,r=0,maxLen=0;
+        vector<int> freq(256,0); //ASCII characters
+        while(r<n)
+        {
+            freq[s[r]]++;
+
+            //till already present,shrink it
+            while(freq[s[r]]>1)
+            {
+                freq[s[l]]--;
+                l++;
+            }
+
+            maxLen=max(maxLen,r-l+1);
+
+            r++;
+        }
+        return maxLen;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)
+
+//Approach 2:
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int n=s.length();
+        int l=0,r=0,maxLen=0;
+        unordered_map<char,int> mpp;
+
+        while(r<n)
+        {
+            mpp[s[r]]++;
+
+            //till already present,shrink it
+            while(mpp[s[r]]>1)
+            {
+                mpp[s[l]]--;
+                l++;
+            }
+            maxLen=max(maxLen,r-l+1);
+            r++;
+        }
+        return maxLen;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

@@ -1,0 +1,63 @@
+/*
+Given an array of integers nums and an integer k. A continuous subarray is called nice if there are k odd numbers on it.
+Return the number of nice sub-arrays.
+
+Example:
+Input: nums = [1,1,2,1,1], k = 3
+Output: 2
+Explanation: The only sub-arrays with 3 odd numbers are [1,1,2,1] and [1,2,1,1].
+*/
+
+//Code:
+//Approach 1: Brute force
+class Solution {
+public:
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        int n=nums.size(),count=0;
+        for(int start=0;start<n;start++)
+        {
+            int oddCount=0;// Track number of odd elements in current subarray
+            for(int end=start;end<n;end++)
+            {
+                if(nums[end]%2==1) oddCount++;
+                if(oddCount>k) break;// If odd count exceeds k, break (not nice)
+                if(oddCount==k) count++;// If odd count is exactly k, count this subarray
+            }
+        }
+        return count;
+    }
+};
+
+//Time: O(n^2)
+//Space: O(1)
+
+//Approach 2: Optimal
+class Solution {
+public:
+    int atMost(vector<int>& nums, int k)
+    {
+        int left=0,res=0,oddCount=0;
+        for(int right=0;right<nums.size();right++)
+        {
+            // If current number is odd, increment oddCount
+            if(nums[right]%2==1) oddCount++;
+
+            //If window contains more than allowed odd numbers, shrink it
+            while(oddCount>k) 
+            {
+                if(nums[left]%2==1) oddCount--;
+                left++;
+            }
+            // Add valid subarrays ending at right
+            res+=right-left+1;
+        }
+        return res;
+    }
+
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        return atMost(nums,k)-atMost(nums,k-1);
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

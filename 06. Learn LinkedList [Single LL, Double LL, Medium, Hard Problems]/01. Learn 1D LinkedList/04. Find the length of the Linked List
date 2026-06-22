@@ -1,0 +1,29 @@
+/*
+Given head of a singly linked list. Find the length of the linked list, where length is defined as the number of nodes in the linked list.
+
+Example:
+Input: head: 1 -> 2 -> 3 -> 4 -> 5
+Output: 5
+Explanation: Length of the linked list is 5, as there are 5 nodes present in it.
+*/
+
+//Code:
+class Solution {
+  public:
+    int getCount(Node* head) {
+        if(head==NULL) return 0;
+        int length=0;
+        
+        Node *curr=head;
+        while(curr!=NULL)
+        {
+            curr=curr->next;
+            length++;
+        }
+        
+        return length;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

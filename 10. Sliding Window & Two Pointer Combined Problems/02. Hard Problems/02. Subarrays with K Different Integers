@@ -1,0 +1,65 @@
+/*
+Given an integer array nums and an integer k, return the number of good subarrays of nums.
+A good array is an array where the number of different integers in that array is exactly k.
+For example, [1,2,3,1,2] has 3 different integers: 1, 2, and 3.
+A subarray is a contiguous part of an array.
+
+Example:
+Input: nums = [1,2,1,2,3], k = 2
+Output: 7
+Explanation: Subarrays formed with exactly 2 different integers: [1,2], [2,1], [1,2], [2,3], [1,2,1], [2,1,2], [1,2,1,2]
+*/
+
+//Code:
+class Solution {
+private:
+    int atMost(vector<int>& nums, int k) {
+        int l=0,r=0,distinct=0,count=0,n=nums.size();
+        //We can use unordered map as well
+        vector<int> hash(n+1,0);
+        while(r<n)
+        {
+            if(hash[nums[r]]==0)//new type
+            {
+                distinct++;
+            }
+
+            hash[nums[r]]++;
+
+            while(distinct>k)
+            {
+                hash[nums[l]]--;//Remove left fruit from window.
+
+                if(hash[nums[l]]==0) distinct--;//If its count becomes zero then it means one fruit type is completely removed.
+                l++;
+            }
+
+            // Count all subarrays ending at current right
+            // If [l … r] is valid,then these are automatically valid:
+            // [l ..... r]
+            // [l+1 ... r]
+            // [l+2 ... r]
+            // ...
+            // [r ..... r]
+
+            // How many are these?
+            // Number of starting positions:
+            // l, l+1, l+2, ..., r
+
+            // Count them: Total = r - l + 1
+            count+=r-l+1;
+            r++;
+        }
+        return count;
+    }
+
+public:
+    //Exactly(K) = AtMost(K) − AtMost(K−1)
+    int subarraysWithKDistinct(vector<int>& nums, int k)
+    {
+        return atMost(nums,k)-atMost(nums,k-1);
+    }
+};
+
+//Time: O(n)
+//Space: O(n)

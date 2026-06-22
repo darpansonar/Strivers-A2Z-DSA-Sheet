@@ -1,0 +1,70 @@
+/*
+Problem 1:
+Given a Linked List, delete the head of the Linked List and return the new head of the modified Linked List.
+Note: Set the original head to NULL.
+
+Example:
+Input: head -> 8 -> 2 -> 3 -> 1 -> 7 -> NULL
+Output: 2 -> 3 -> 1 -> 7
+Explanation: After deleting head from the given linked list, we'll be left with just 2 -> 3 -> 1 -> 7.
+*/
+
+//Code:
+class Solution {
+  public:
+    Node *deleteHead(Node *head) {
+        // code here
+        if(head==NULL || head->next==NULL)
+        {
+            delete head;
+            return NULL;
+        }
+        Node *temp=head;
+        
+        head=head->next;
+        delete temp;
+        
+        return head;
+    }
+};
+
+//Time: O(1)
+//Space: O(1)
+
+/*
+Problem 2:
+Given a Linked List, delete the tail (i.e., the last node) of the Linked List and return the new head of the modified Linked List.
+
+Example:
+Input: head -> 1 -> 2 -> 3 -> 4 -> 5 -> NULL
+Output: 1 -> 2 -> 3 -> 4
+Explanation: After deleting tail from the given linked list, we'll be left with just 1 -> 2 -> 3 -> 4.
+*/
+
+//Code:
+class Solution {
+  public:
+    Node* removeLastNode(Node* head) {
+        // code here
+        if(head==NULL || head->next==NULL)
+        {
+            delete head;
+            return NULL;
+        }
+        
+        Node *curr=head;
+        while(curr->next->next!=NULL)
+        {
+            curr=curr->next;
+        }
+        //Now, curr is the second last element
+        
+        delete curr->next;
+        curr->next=NULL;
+        
+        return head;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

@@ -1,0 +1,82 @@
+/*
+Given the head of a doubly linked list. You have to reverse the doubly linked list and return its head.
+Note: The driver code will print the returned list in both forward and backward directions.
+
+Example:
+Input:
+NULL <- 3 <-> 4 <-> 5 -> NULL
+Output: 
+5 4 3
+3 4 5
+Explanation: After reversing the given doubly linked list the new list will be 5 <-> 4 <-> 3.
+*/
+
+//Code:
+//Approach 1: Using stack
+/*
+class DLLNode {
+  public:
+    int data;
+    DLLNode *next;
+    DLLNode *prev;
+
+    DLLNode(int val) {
+        data = val;
+        this->next = NULL;
+        this->prev = NULL;
+    }
+};
+*/
+class Solution {
+  public:
+    DLLNode* reverseDLL(DLLNode* head) {
+        stack<int> st;
+        DLLNode* temp=head;
+        while(temp!=NULL)
+        {
+            st.push(temp->data);
+            temp=temp->next;
+        }
+        
+        temp=head;
+        while(temp!=NULL)
+        {
+            temp->data=st.top();
+            st.pop();
+        }
+        
+        return head;
+    }
+};
+
+//Time: O(n)
+//Space: O(n)
+
+//Approach 2: 
+class Solution {
+  public:
+    // Function to reverse a doubly linked list
+    DLLNode* reverseDLL(DLLNode* head) {
+        if (head == NULL || head->next == NULL) return head;
+        
+        DLLNode* temp=head;
+        DLLNode* front=temp->next;
+        DLLNode* back=NULL;
+        
+        while(temp!=NULL)
+        {
+            temp->next=temp->prev;
+            temp->prev=front;
+            
+            back=temp;
+            temp=front;
+            if (front != NULL)
+                front = front->next;
+        }
+        
+        return back;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

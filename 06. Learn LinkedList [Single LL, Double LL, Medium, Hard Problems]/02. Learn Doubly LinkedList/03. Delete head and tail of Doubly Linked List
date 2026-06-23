@@ -1,0 +1,64 @@
+/*
+Problem 1:
+Given a doubly linked list of size n, you have to delete the head of the linked list and return the new head.
+Note: Please set the previous of new head to null, and set the next of old head to null, and then delete the old head.
+
+Example:
+Input:
+2 <-> 5 <-> 7 <-> 8 <-> 99 <-> 100
+Output:
+5 7 8 99 100 or
+100 99 8 7 5
+*/
+
+//Code:
+Node *deleteHead(Node *head) {
+    // Your code here
+    if(head==NULL) return NULL;
+    Node* temp=head;
+    head=temp->next;
+    head->prev=NULL;
+    delete temp;
+    
+    return head;
+}
+
+//Time: O(1)
+//Space: O(1)
+
+/*
+Problem 2:
+Given a doubly linked list, the task is to delete the last node of the given linked list.
+
+Example:
+Input: 1 <-> 2 <-> 3 <-> NULL
+Output: 1 <-> 2 <-> NULL
+Explanation: The last node of the linked list is 3, so 3 is deleted.
+*/
+
+//Code:
+Node *delLast(Node *head) {
+    if (head == NULL) return NULL;
+    if (head->next == NULL) 
+    {
+        delete head;
+        return NULL;
+    }
+
+    // Traverse to the last node
+    Node *curr = head;
+    while (curr->next != NULL)
+        curr = curr->next;
+
+    // Update the previous node's next pointer
+    curr->prev->next = NULL;
+
+      // Delete the last node
+    delete curr; 
+
+    // Return the updated head
+    return head;
+}
+
+//Time: O(n)
+//Space: O(1)

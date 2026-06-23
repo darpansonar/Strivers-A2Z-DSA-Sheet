@@ -1,0 +1,57 @@
+/*
+Given the head of a singly linked list, reverse the list, and return the reversed list.
+
+Example:
+Input: head = [1,2,3,4,5]
+Output: [5,4,3,2,1]
+*/
+
+//Code:
+//Approach 1: Using stack (iterative)
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* temp=head;
+        stack<int> st;
+        while(temp!=NULL)
+        {
+            st.push(temp->val);
+            temp=temp->next;
+        }
+        
+        temp=head;
+        while(temp!=NULL)
+        {
+            temp->val=st.top();
+            st.pop();
+            temp=temp->next;
+        }
+        
+        return head;
+    }
+};
+
+//Time: O(n)
+//Space: O(n)
+
+//Approach 2: Optimal
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* temp=head;
+        ListNode* prev=NULL;
+
+        while(temp!=NULL)
+        {
+            ListNode* front=temp->next;
+            temp->next=prev;
+            prev=temp;
+            temp=front;
+        }
+
+        return prev;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

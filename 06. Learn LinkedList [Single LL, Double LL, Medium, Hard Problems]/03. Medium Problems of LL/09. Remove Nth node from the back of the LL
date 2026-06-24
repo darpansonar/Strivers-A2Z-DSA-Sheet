@@ -1,0 +1,101 @@
+/*
+Given the head of a linked list, remove the nth node from the end of the list and return its head.
+
+Example:
+Input: head = [1,2,3,4,5], n = 2
+Output: [1,2,3,5]
+*/
+
+//Code:
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+//Approach 1:
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        int length=0;
+
+        ListNode* temp=head;
+        if(head==NULL || head->next==NULL) return NULL;
+        //Firstly,find length
+        while(temp!=NULL)
+        {
+            length++;
+            temp=temp->next;
+        }
+
+        if(n==length)
+        {
+            ListNode* newHead=head->next;
+            delete head;
+            return newHead;
+        }
+
+        //Find the node before the one to be deleted
+        temp=head;
+        for(int i=1;i<length-n;i++)
+        {
+            temp=temp->next;
+        }
+
+        //Now, temp is the node that is just before the node that is to be deleted
+        ListNode* nodeToDelete=temp->next;
+        temp->next=temp->next->next;
+
+        delete nodeToDelete;
+        return head;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)
+
+//Approach 2:
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode *slow=head;
+        ListNode *fast=head;
+
+        // Move fast pointer n steps ahead and this creates a gap of n nodes between slow and fast
+        for(int i=0;i<n;i++)
+        {
+            fast=fast->next;
+        }
+
+        // If fast becomes NULL after moving n steps, it means n == length of the list.
+        // Therefore, the node to delete is the head itself.
+        if(fast==NULL)
+        {
+            ListNode *newHead=head->next;
+            delete head;
+            return newHead;
+        }
+
+        // Move both pointers together until fast reaches the last node of the list.
+        // Because the gap between slow and fast is n, when fast reaches the last node,
+        // slow will be exactly one node before the node that needs to be deleted.
+        while(fast->next!=NULL)
+        {
+            slow=slow->next;
+            fast=fast->next;
+        }
+
+        ListNode *nodeToBeDeleted=slow->next;
+        slow->next=slow->next->next;
+        delete nodeToBeDeleted;
+
+        return head;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

@@ -1,0 +1,135 @@
+/*
+Given the head of a linked list where nodes can contain values 0s, 1s, and 2s only. Your task is to rearrange the list so that all 0s appear at the beginning, followed by all 1s, and all 2s are placed at the end.
+
+Example:
+Input: head = 1 → 2 → 2 → 1 → 2 → 0 → 2 → 2
+Output: 0 → 1 → 1 → 2 → 2 → 2 → 2 → 2
+Explanation: All the 0s are segregated to the left end of the linked list, 2s to the right end of the list, and 1s in between.
+*/
+
+//Code:
+/* 
+Node is defined as
+  struct Node 
+  {
+      int data;
+      struct Node *next;
+      Node(int x) 
+      {
+          data = x;
+          next = NULL;
+      }
+  };
+*/
+//Approach 1:
+class Solution {
+  public:
+    Node* segregate(Node* head) {
+        // code here
+        Node* temp=head;
+        int cnt0=0,cnt1=0,cnt2=0;
+        while(temp!=NULL)
+        {
+            if(temp->data==0) cnt0++;
+            else if(temp->data==1) cnt1++;
+            else cnt2++;
+            temp=temp->next;
+        }
+        
+        temp=head;
+        while(temp!=NULL)
+        {
+            for(int i=1;i<=cnt0;i++)
+            {
+                temp->data=0;
+                temp=temp->next;
+            }
+            
+            for(int i=1;i<=cnt1;i++)
+            {
+                temp->data=1;
+                temp=temp->next;
+            }
+            
+            for(int i=1;i<=cnt2;i++)
+            {
+                temp->data=2;
+                temp=temp->next;
+            }
+        }
+        return head;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)
+
+//Approach 2:
+class Solution {
+  public:
+    Node* segregate(Node* head) {
+        if(head==NULL || head->next==NULL) return head;
+        
+        // Create three dummy nodes for 0's list, 1's list and 2's list.
+        Node *zeroHead=new Node(-1);
+        Node *oneHead=new Node(-1);
+        Node *twoHead=new Node(-1);
+        
+        // Tail pointers to insert nodes at the end of each respective list.
+        Node *zeroTail=zeroHead;
+        Node *oneTail=oneHead;
+        Node *twoTail=twoHead;
+        
+        Node *temp=head;
+        
+        // Traverse the original list and place each node into its respective list.
+        while(temp!=NULL)
+        {
+            if(temp->data==0)
+            {
+                zeroTail->next=temp;
+                zeroTail=zeroTail->next;
+            }
+            else if(temp->data==1)
+            {
+                oneTail->next=temp;
+                oneTail=oneTail->next;
+            }
+            else if(temp->data==2)
+            {
+                twoTail->next=temp;
+                twoTail=twoTail->next;
+            }
+            temp=temp->next;
+        }
+        
+        //Connect the three lists
+        // Connect 0's list with 1's list.
+        // If 1's list is empty, connect 0's list directly to 2's list.
+        if(oneHead->next != NULL)
+        {
+            zeroTail->next = oneHead->next;
+        }
+        else
+        {
+            zeroTail->next = twoHead->next;
+        }
+
+        // Connect 1's list to 2's list.
+        oneTail->next = twoHead->next;
+
+        // Mark the end of the final linked list.
+        twoTail->next = NULL;
+
+
+        Node *newHead=zeroHead->next;
+        delete zeroHead;
+        delete oneHead;
+        delete twoHead;
+
+        return newHead;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

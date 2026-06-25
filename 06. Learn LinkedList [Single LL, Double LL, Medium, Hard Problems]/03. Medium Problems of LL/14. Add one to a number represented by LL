@@ -1,0 +1,75 @@
+/*
+You are given head of a linked list where each node contains a single digit. The digits together represent a number formed by concatenating the node values in order. Add 1 to this number and return the head of the modified linked list.
+
+Example:
+Input: Head: 4->5->6
+Output: 4->5->7
+Explanation: 4->5->6 represents 456 and when 1 is added it becomes 457. 
+*/
+
+//Code:
+/*
+struct Node
+{
+    int data;
+    struct Node* next;
+
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+};
+*/
+class Solution {
+private:
+    Node* reverseLL(Node* head)
+    {
+        Node *temp=head;
+        Node *prev=NULL;
+        
+        while(temp!=NULL)
+        {
+            Node *front=temp->next;
+            temp->next=prev;
+            prev=temp;
+            temp=front;
+        }
+        return prev;
+    }
+
+public:
+    Node* addOne(Node* head) 
+    {
+        // Your Code here
+        //Step 1: Reverse the LL
+        head=reverseLL(head);
+        //6->5->4
+        
+        Node *curr=head;
+        int carry=1; //because we are adding 1
+        
+        //Step 2: Add carry to the digits
+        while(curr!=NULL && carry>0)
+        {
+            int sum=curr->data + carry;
+            curr->data=sum%10;
+            carry=sum/10;
+            curr=curr->next;
+        }
+        
+        // Step 3: Reverse back to original order
+        head=reverseLL(head);
+        
+        //Step 3: If carry remains, add new node at front
+        if(carry)
+        {
+            Node *newNode=new Node(carry);
+            newNode->next=head;
+            head=newNode;
+        }
+        return head;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

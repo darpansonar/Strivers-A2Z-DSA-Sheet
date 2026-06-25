@@ -1,0 +1,64 @@
+/*
+You are given the head of a doubly Linked List and a key x . Your task is to delete all occurrences of the given key x if it is present and return the new DLL.
+
+Example:
+Input: 2<->2<->10<->8<->4<->2<->5<->2, x = 2
+Output:  10<->8<->4<->5
+Explanation: 
+All Occurences of 2 have been deleted.
+*/
+
+//Code:
+/* a Node of the doubly linked list
+class Node {
+  public:
+    int data;
+    Node* next;
+    Node* prev;
+
+    Node(int x) {
+        data = x;
+        next = nullptr;
+        prev = nullptr;
+    }
+};
+*/
+
+class Solution {
+  public:
+    Node *deleteNode(Node *head, Node *ele)
+    {
+        // If the linked list is empty or node is nullptr
+        if(head==NULL || ele==NULL) return head;
+        
+        // If deleting head node
+        if(ele==head) head=ele->next;
+        if(ele->prev!=NULL) ele->prev->next=ele->next;// Update previous node
+        if(ele->next!=NULL) ele->next->prev=ele->prev;// Update next node
+        
+        delete ele;
+        return head;
+    }
+    
+    // Function to delete a specified node from the linked list
+    Node* deleteAllOccurOfX(Node* head, int x) {
+        Node *temp=head;
+        while(temp!=NULL)
+        {
+            if(temp->data==x)
+            {
+                Node *nextNode=temp->next;
+                head=deleteNode(head,temp);
+                temp=nextNode;
+            }
+            else
+            {
+                temp=temp->next;
+            }
+        }
+        return head;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

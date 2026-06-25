@@ -1,0 +1,53 @@
+/*
+Given a doubly linked list of n nodes sorted by values, remove duplicate nodes present in the linked list.
+
+Example:
+Input: head: 1<->1<->1<->2<->3<->4
+Output: 1<->2<->3<->4
+Explanation: Only the first occurance of node with value 1 is retained along with other distinct values. 
+*/
+
+//Code:
+/* Structure of a link list node
+class Node {
+  public:
+    int data;
+    Node* next;
+    Node* prev;
+    Node(int value) {
+        data = value;
+        next = nullptr;
+        prev = nullptr;
+    }
+};
+*/
+class Solution {
+  public:
+    Node *deleteNode(Node *head, Node *ele)
+    {
+        if(head==NULL || ele==NULL) return head;
+        
+        if(head==ele) head=ele->next;
+        if(ele->prev!=NULL) ele->prev->next=ele->next;
+        if(ele->next!=NULL) ele->next->prev=ele->prev;
+        
+        delete ele;
+        return head;
+        
+    }
+    Node* removeDuplicates(Node* head) {
+        // code here
+        if(head==NULL || head->next==NULL) return head;
+        
+        Node *temp=head;
+        while(temp!=NULL && temp->next!=NULL)
+        {
+            if(temp->data==temp->next->data) head=deleteNode(head,temp->next);
+            else temp=temp->next;
+        }
+        return head;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

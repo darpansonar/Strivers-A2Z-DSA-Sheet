@@ -1,0 +1,43 @@
+/*
+Given the root of a binary tree, return the postorder traversal of its nodes' values.
+
+Example 1:
+Input: root = [1,null,2,3]
+Output: [3,2,1]
+
+Example 2:
+Input: root = [1,2,3,4,5,null,8,null,null,6,7,9]
+Output: [4,6,7,5,2,9,8,3,1]
+*/
+
+//Code:
+//Approach: Iterative (using 1 stack)
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) 
+    {
+        vector<int> postorderArr;
+        if(root==NULL) return postorderArr;
+        stack<TreeNode*> st;
+        
+        st.push(root);
+        while(!st.empty())
+        {
+            TreeNode* curr=st.top();
+            postorderArr.push_back(curr->val);
+            st.pop();
+
+            if(curr->left!=NULL) st.push(curr->left);
+            if(curr->right!=NULL) st.push(curr->right);
+            
+        }
+        //we hve Root → Right → Left which is not postorder
+        //After reversing, Left → Right → Root
+
+        reverse(postorderArr.begin(),postorderArr.end());
+        return postorderArr;
+    }
+};
+
+//Time: O(n)
+//Space: O(n)

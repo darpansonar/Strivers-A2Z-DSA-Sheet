@@ -1,0 +1,98 @@
+/*
+Given the root of a binary tree, return the postorder traversal of its nodes' values.
+
+Example 1:
+Input: root = [1,null,2,3]
+Output: [3,2,1]
+
+Example 2:
+Input: root = [1,2,3,4,5,null,8,null,null,6,7,9]
+Output: [4,6,7,5,2,9,8,3,1]
+*/
+
+//Code:
+//Approach 1: Recursive
+class Solution {
+public:
+    void postorder(TreeNode* root,vector<int> &arr)
+    {
+        if(root==NULL) return;
+
+        postorder(root->left,arr);
+        postorder(root->right,arr);
+        arr.push_back(root->val);
+    }
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> postorderArr;
+        postorder(root,postorderArr);
+        return postorderArr;
+    }
+};
+
+//Time: O(n)
+//Space: O(h), where h is the height of the tree
+
+//Approach 2: Iterative (using 1 stack)
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) 
+    {
+        vector<int> postorderArr;
+        if(root==NULL) return postorderArr;
+        stack<TreeNode*> st;
+        
+        st.push(root);
+        while(!st.empty())
+        {
+            TreeNode* curr=st.top();
+            postorderArr.push_back(curr->val);
+            st.pop();
+
+            if(curr->left!=NULL) st.push(curr->left);
+            if(curr->right!=NULL) st.push(curr->right);
+            
+        }
+        //we hve Root → Right → Left which is not postorder
+        //After reversing, Left → Right → Root
+
+        reverse(postorderArr.begin(),postorderArr.end());
+        return postorderArr;
+    }
+};
+
+//Time: O(n)
+//Space: O(n)
+
+//Approach 3: Iterative (using 2 stack)
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root)
+    {
+        vector<int> postorderArr;
+        if(root==NULL) return postorderArr;
+
+        stack<TreeNode*> st1,st2;
+        st1.push(root);
+
+        while(!st1.empty())
+        {
+            root=st1.top();
+            st1.pop();
+
+            st2.push(root);
+            if(root->left!=NULL) st1.push(root->left);
+            if(root->right!=NULL) st1.push(root->right);
+        }
+
+        while(!st2.empty())
+        {
+            postorderArr.push_back(st2.top()->val);
+            st2.pop();
+        }
+
+        return postorderArr;
+    }
+};
+
+//Time: O(n)
+//Space: O(n)

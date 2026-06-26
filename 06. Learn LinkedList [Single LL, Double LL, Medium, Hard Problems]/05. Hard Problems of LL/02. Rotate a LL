@@ -1,0 +1,109 @@
+/*
+Given the head of a linked list, rotate the list to the right by k places.
+
+Example:
+Input: head = [1,2,3,4,5], k = 2
+Output: [4,5,1,2,3]
+*/
+
+//Code:
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+//Approach 1: Brute force
+class Solution {
+private:
+    int length(ListNode* head)
+    {
+        int cnt = 0;
+        while(head != NULL)
+        {
+            cnt++;
+            head = head->next;
+        }
+        return cnt;
+    }
+public:
+    ListNode* rotateRight(ListNode* head, int k) 
+    {
+        if(head==NULL || head->next==NULL || k==0) return head;
+        
+        int len = length(head);
+        k %= len;
+        //perform the rotation k times
+        for(int i=0;i<k;i++)
+        {
+            ListNode *curr=head;
+            ListNode *prev=NULL;
+            while(curr->next!=NULL)
+            {
+                prev=curr;
+                curr=curr->next;
+            }
+            //Now, curr is the last node and prev is the second last node
+            prev->next=NULL;
+            curr->next=head;
+            head=curr;
+        }
+        return head;
+    }
+};
+
+//Time: O(n + n*(k%n)) ~ O(n^2)
+//Space: O(1)
+
+//Approach 2: Optimal
+class Solution {
+private:
+    int length(ListNode* head)
+    {
+        ListNode* temp=head;
+        int count=0;
+        while(temp!=NULL)
+        {
+            temp=temp->next;
+            count++;
+        }
+        return count;
+    }
+
+public:
+    ListNode* rotateRight(ListNode* head, int k) 
+    {
+        if(head==NULL || head->next==NULL) return head;
+
+        ListNode* temp1=head;
+        ListNode* temp2=head;
+
+        while(temp1->next!=NULL)
+        {
+            temp1=temp1->next;
+        }//now,temp1 is the last node
+
+        int len=length(head);
+        k=k%len;
+
+        for(int i=1;i<=len-k-1;i++)
+        {
+            temp2=temp2->next;
+        }//temp2 is the last element of rotated LL
+
+        //create a circular link
+        temp1->next=head;
+
+        head=temp2->next;
+        temp2->next=NULL;
+        return head;
+    }
+};
+
+//Time: O(n)
+//Space: O(1)

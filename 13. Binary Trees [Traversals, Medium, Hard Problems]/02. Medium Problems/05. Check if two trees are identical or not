@@ -1,0 +1,60 @@
+/*
+Given the roots of two binary trees p and q, write a function to check if they are the same or not.
+Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
+
+Example 1:
+Input: p = [1,2,3], q = [1,2,3]
+Output: true
+
+Example 2:
+Input: p = [1,2], q = [1,null,2]
+Output: false
+*/
+
+//Code:
+//Approach 1:
+class Solution {
+private:
+    void inorder(TreeNode* root,vector<int> &arr)
+    {
+        if(root==NULL) return;
+
+        inorder(root->left,arr);
+        arr.push_back(root->val);
+        inorder(root->right,arr);
+    }
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> treeArr;
+        inorder(root,treeArr);
+        return treeArr;
+    }
+public:
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+       if(inorderTraversal(p)==inorderTraversal(q)) return true;
+       
+       return false;
+    }
+};
+
+//Time: O(n+m)
+//Space: O(n+m+h1+h2) ~ O(n+m)
+where,
+n = number of nodes in tree p
+m = number of nodes in tree q
+
+//Approach 2:
+class Solution {
+public:
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+       if(p==NULL && q==NULL) return true;//case1
+       if(p==NULL || q==NULL) return false;//case2
+
+       //case3
+       return((p->val==q->val)
+                && isSameTree(p->left,q->left)
+                && isSameTree(p->right,q->right));
+    }
+};
+
+//Time: O(min(n,m))
+//Space: O(h)

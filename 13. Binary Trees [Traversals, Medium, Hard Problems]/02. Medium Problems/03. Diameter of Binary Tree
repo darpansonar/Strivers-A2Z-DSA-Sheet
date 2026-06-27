@@ -1,0 +1,109 @@
+/*
+Given the root of a binary tree, return the length of the diameter of the tree.
+The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+The length of a path between two nodes is represented by the number of edges between them.
+
+Example:
+Input: root = [1,2,3,4,5]
+Output: 3
+Explanation: 3 is the length of the path [4,2,1,3] or [5,2,1,3].
+*/
+
+//Code:
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+
+//Approach 1: Brute force
+//Find diameter of left subtree
+//Then find diameter of right subtree
+//Then find longest path passing through the current node
+//Finally, find maximum of all these three
+class Solution {
+public:
+    int height(TreeNode* root) {
+        if(root==NULL) return 0;
+
+        int leftHeight=height(root->left);
+        int rightHeight=height(root->right);
+
+        return 1+max(leftHeight,rightHeight);
+    }
+
+    int diameterOfBinaryTree(TreeNode* root)
+    {
+        if(root==NULL) return 0;
+
+        int op1=diameterOfBinaryTree(root->left);
+        int op2=diameterOfBinaryTree(root->right);
+        int op3=height(root->left) + height(root->right);
+
+        return max(op1, max(op2,op3));
+    }
+};
+
+//Time: O(n^2)
+//Space: O(h), where h is the height of the tree
+
+//Approach 2: Optimal
+class Solution {
+public:
+    int maxDia=0;
+    int height(TreeNode* root)
+    {
+        if(root==NULL) return 0;
+        int leftHeight=height(root->left);
+        int rightHeight=height(root->right);
+        
+        maxDia=max(maxDia,rightHeight+leftHeight);
+        return 1+max(leftHeight,rightHeight);
+    }
+    int diameterOfBinaryTree(TreeNode* root) {
+        height(root);
+        return maxDia;
+    }
+};
+
+//Time: O(n)
+//Space: O(h), where h is the height of the tree
+
+//Approach 3: Pair method
+// Pair stores:
+// first->diameter and second->height
+class Solution {
+public:
+    pair<int,int> diameterFast(TreeNode* root)
+    {
+        //first part=diameter and second part=height
+        if(root==NULL) return {0, 0};
+
+        pair<int,int> left = diameterFast(root->left);
+        pair<int,int> right = diameterFast(root->right);
+
+        int op1=left.first;  // diameter of left subtree
+        int op2=right.first; // diameter of right subtree
+        int op3=left.second+right.second; //longest path passing through the current node = leftHeight + rightHeight
+
+        pair<int,int> ans;
+        ans.first=max(op1,max(op2,op3)); //Diameter
+        ans.second=1+max(left.second,right.second); //Height
+
+        return ans;
+    }
+
+    int diameterOfBinaryTree(TreeNode* root)
+    {
+        return diameterFast(root).first;
+    }
+};
+
+//Time: O(n)
+//Space: O(h), where h is the height of the tree

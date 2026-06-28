@@ -1,0 +1,63 @@
+/*
+Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).
+
+Example:
+Input: root = [3,9,20,null,null,15,7]
+Output: [[3],[9,20],[15,7]]
+*/
+
+//Code:
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> res;
+
+        // Base case: If the root is null, return an empty result
+        if(root == NULL) return res;
+
+        // Use a queue for BFS, storing TreeNode pointers
+        queue<TreeNode*> q; 
+        q.push(root);
+
+        // Loop until the queue is empty (all nodes have been visited)
+        while(!q.empty())
+        {
+            // Get the size of the current level in the queue
+            int levelSize = q.size(); 
+            vector<int> level; // Vector to store the values of the current level
+
+            // Process exactly 'levelSize' nodes (all nodes at the current level)
+            for(int i = 0; i < levelSize; i++)
+            {
+                // 1. Dequeue the current node
+                TreeNode *currNode = q.front();
+                q.pop();
+
+                // 2. Add its value to the current level's list
+                level.push_back(currNode->val);
+
+                // 3. Enqueue its children (for the next level)
+                if(currNode->left != NULL)    q.push(currNode->left);
+                if(currNode->right != NULL)   q.push(currNode->right);
+            }
+            // Add the completed level list to the final result
+            res.push_back(level);
+        }
+        return res;
+    }
+};
+
+//Time: O(n)
+//Space: O(n)

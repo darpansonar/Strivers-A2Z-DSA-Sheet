@@ -1,0 +1,91 @@
+/*
+Given the root of a binary tree, calculate the vertical order traversal of the binary tree.
+For each node at position (row, col), its left and right children will be at positions (row + 1, col - 1) and (row + 1, col + 1) respectively. The root of the tree is at (0, 0).
+The vertical order traversal of a binary tree is a list of top-to-bottom orderings for each column index starting from the leftmost column and ending on the rightmost column. There may be multiple nodes in the same row and same column. In such a case, sort these nodes by their values.
+Return the vertical order traversal of the binary tree.
+
+Example:
+Input: root = [3,9,20,null,null,15,7]
+Output: [[9],[3,15],[20],[7]]
+Explanation:
+Column -1: Only node 9 is in this column.
+Column 0: Nodes 3 and 15 are in this column in that order from top to bottom.
+Column 1: Only node 20 is in this column.
+Column 2: Only node 7 is in this column.
+*/
+
+//Code:
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        //we have to do a horizonatal mapping with levelwise nodes
+        // map stores: {Horizontal distance(hd),{level number,node values vector}} 
+        map<int,map<int,multiset<int>>> nodes;
+        //if multiple nodes have the same (hd, level), they must be sorted by their values.
+        //So, we use multiset
+        
+        //Queue stores: {node, {hd,level}}
+        queue<pair<TreeNode*,pair<int,int>>> q;
+
+        if(root==NULL) return {};
+
+        // Root is at horizontal distance 0 and level 0
+        q.push({root,{0,0}});
+
+        while(!q.empty())
+        {
+            // Get front node from queue
+            pair<TreeNode*,pair<int,int>> temp=q.front();
+            q.pop();
+
+            TreeNode *currNode=temp.first;
+            int hd=temp.second.first;// Horizontal distance
+            int level=temp.second.second;// Level
+
+            // Store node according to its horizontal distance and level
+            nodes[hd][level].insert(currNode->val);
+
+            // Left child: hd decreases by 1, level increases by 1
+            if(currNode->left!=NULL)
+                q.push({currNode->left,{hd-1,level+1}});
+
+            // Right child: hd increases by 1, level increases by 1
+            if(currNode->right!=NULL)
+                q.push({currNode->right,{hd+1,level+1}});
+        }
+
+        vector<vector<int>> ans;
+
+        // Traverse each vertical line
+        for(auto i:nodes)
+        {
+            vector<int> col;
+            // Traverse each level
+            for(auto j:i.second)
+            {
+                // Add all nodes of same hd and level
+                for(auto k:j.second)
+                {
+                    col.push_back(k);
+                }
+            }
+            ans.push_back(col);
+        }
+        return ans;
+    }
+};
+
+//Time: O(n log n)
+//Space: O(n)
+//Auxillary space: O(n)

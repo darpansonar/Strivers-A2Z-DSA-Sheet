@@ -1,0 +1,61 @@
+/*
+You are given the root of a binary tree, and your task is to return its bottom view. The bottom view of a binary tree is the set of nodes visible when the tree is viewed from the bottom.
+Note: If there are multiple bottom-most nodes for a horizontal distance from the root, then the latter one in the level order traversal is considered.
+
+Example:
+Input: root = [1, 2, 3, 4, 5, N, 6]    
+Output: [4, 2, 5, 3, 6]
+Explanation: The Green nodes represent the bottom view of below binary tree.
+*/
+
+//Code:
+class Solution {
+  public:
+    vector<int> bottomView(Node *root) {
+        // code here
+        vector<int> ans;
+        if(root==NULL) return ans;
+        
+        //map stores: {horizontal distance,node value}
+        map<int,int> bottomNode;
+        //queue stores: {node, hd}
+        queue<pair<Node*,int>> q;
+        
+        // Push root with horizontal distance = 0
+        q.push({root,0});
+        
+        while(!q.empty())
+        {
+            pair<Node*,int> temp=q.front();
+            q.pop();
+            
+            Node *frontNode=temp.first;
+            int hd=temp.second;
+            
+            // Update the node for this horizontal distance.
+            // Since BFS processes nodes level by level,
+            // the last node stored at each HD becomes the bottom view.
+            bottomNode[hd]=frontNode->data;
+            
+            // Push left child with HD - 1
+            if(frontNode->left!=NULL)
+                q.push({frontNode->left,hd-1});
+                
+            // Push right child with HD + 1
+            if(frontNode->right!=NULL)
+                q.push({frontNode->right,hd+1});
+        }
+        
+        // Traverse the map in sorted order of HD
+        // and store the node values in the answer
+        for(auto it:bottomNode)
+        {
+            ans.push_back(it.second);
+        }
+        return ans;
+    }
+};
+
+//Time: O(n log n)
+//Space: O(n)
+//Auxillary space: O(n)
